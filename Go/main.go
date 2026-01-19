@@ -1,7 +1,7 @@
 package main
 
-import "go/server"
+import "elp-go/server"
 
 func main() {
-    server.StartTCPServer(":8000")
+	server.StartTCPServer(":8000")
 }

@@ -99,7 +99,6 @@ Composants:
 - Zone de texte pour entrer le programme
 - Boutons "Dessiner" et "Zoom auto"
 - Zone d'affichage du dessin ou des erreurs
-- Temps de traitement affiché en vert après un rendu réussi
 
 Erreurs:
 - Affichées en rouge avec un fond clair

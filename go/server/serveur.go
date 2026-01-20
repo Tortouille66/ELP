@@ -9,19 +9,20 @@ import (
 	"time"
 )
 
-func gererTransfert(conn net.Conn) {
-	defer conn.Close()
-	fmt.Printf("[%s] Nouveau transfert commencé\n", conn.RemoteAddr())
+// Gère le transfert d'un fichier depuis un client
+func gererTransfert(connexion net.Conn) {
+	defer connexion.Close()
+	fmt.Printf("[%s] Nouveau transfert commencé\n", connexion.RemoteAddr())
 
-	// 1. Lire la taille du fichier (int64 = 8 octets)
+	// Lire la taille du fichier (8 octets)
 	var taille int64
-	err := binary.Read(conn, binary.LittleEndian, &taille)
+	err := binary.Read(connexion, binary.LittleEndian, &taille)
 	if err != nil {
 		fmt.Println("Erreur lecture taille:", err)
 		return
 	}
 
-	// 2. Créer un nom de fichier unique
+	// Créer un nom de fichier unique
 	nomFichier := fmt.Sprintf("recu_%d.png", time.Now().UnixNano())
 	fichier, err := os.Create(nomFichier)
 	if err != nil {
@@ -30,15 +31,14 @@ func gererTransfert(conn net.Conn) {
 	}
 	defer fichier.Close()
 
-	// 3. Copier les données binaires de la connexion vers le fichier
-	// io.CopyN s'arrête exactement après 'taille' octets
-	morsuresRecues, err := io.CopyN(fichier, conn, taille)
+	// Copier les données du client vers le fichier
+	octetsRecus, err := io.CopyN(fichier, connexion, taille)
 	if err != nil {
 		fmt.Println("Erreur lors de la réception:", err)
 		return
 	}
 
-	fmt.Printf("Succès : %s reçu (%d octets)\n", nomFichier, morsuresRecues)
+	fmt.Printf("✓ Succès : %s reçu (%d octets)\n", nomFichier, octetsRecus)
 }
 
 func main() {
@@ -46,15 +46,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer ecouteur.Close()
+	
 	fmt.Println("Serveur de photos actif sur le port 8080...")
 
+	// Accepter les connexions en continu
 	for {
 		connexion, err := ecouteur.Accept()
 		if err != nil {
 			fmt.Println("Erreur acceptation:", err)
 			continue
 		}
-		// Utilisation d'une Goroutine pour gérer chaque photo en parallèle
+		// Traiter chaque client en parallèle
 		go gererTransfert(connexion)
 	}
 }

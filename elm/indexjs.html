@@ -2,6 +2,23 @@
 <html>
 <head>
     <title>Elm App</title>
+    <style>
+        button {
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #007BFF !important;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1) !important;
+        }
+    </style>
 </head>
 <body>
     <div id="app"></div>

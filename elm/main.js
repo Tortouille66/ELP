@@ -1458,7 +1458,7 @@ function _Json_runHelp(decoder, value)
 			// TODO test perf of Object.keys and switch when support is good enough
 			for (var key in value)
 			{
-				if (value.hasOwnProperty(key))
+				if (Object.prototype.hasOwnProperty.call(value, key))
 				{
 					var result = _Json_runHelp(decoder.b, value[key]);
 					if (!$elm$core$Result$isOk(result))
@@ -1627,7 +1627,11 @@ function _Json_emptyObject() { return {}; }
 
 var _Json_addField = F3(function(key, value, object)
 {
-	object[key] = _Json_unwrap(value);
+	var unwrapped = _Json_unwrap(value);
+	if (!(key === 'toJSON' && typeof unwrapped === 'function'))
+	{
+		object[key] = unwrapped;
+	}
 	return object;
 });
 
@@ -2649,7 +2653,7 @@ function _VirtualDom_noOnOrFormAction(key)
 
 function _VirtualDom_noInnerHtmlOrFormAction(key)
 {
-	return key == 'innerHTML' || key == 'formAction' ? 'data-' + key : key;
+	return key == 'innerHTML' || key == 'outerHTML' || key == 'formAction' ? 'data-' + key : key;
 }
 
 function _VirtualDom_noJavaScriptUri(value)
@@ -2668,7 +2672,11 @@ function _VirtualDom_noJavaScriptOrHtmlUri(value)
 
 function _VirtualDom_noJavaScriptOrHtmlJson(value)
 {
-	return (typeof _Json_unwrap(value) === 'string' && _VirtualDom_RE_js_html.test(_Json_unwrap(value)))
+	return (
+		(typeof _Json_unwrap(value) === 'string' && _VirtualDom_RE_js_html.test(_Json_unwrap(value)))
+		||
+		(Array.isArray(_Json_unwrap(value)) && _VirtualDom_RE_js_html.test(String(_Json_unwrap(value))))
+	)
 		? _Json_wrap(
 			/**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		) : value;
@@ -4580,11 +4588,11 @@ var $elm$core$Set$toList = function (_v0) {
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
-var $author$project$Main$BasculerZoom = {$: 'BasculerZoom'};
 var $author$project$Main$Dessiner = {$: 'Dessiner'};
 var $author$project$Main$ModifierSaisi = function (a) {
 	return {$: 'ModifierSaisi', a: a};
 };
+var $elm$core$Basics$True = {$: 'True'};
 var $elm$core$Basics$add = _Basics_add;
 var $elm$core$Basics$apR = F2(
 	function (x, f) {
@@ -5141,7 +5149,6 @@ var $elm$core$Array$initialize = F2(
 			return A5($elm$core$Array$initializeHelp, fn, initialFromIndex, len, _List_Nil, tail);
 		}
 	});
-var $elm$core$Basics$True = {$: 'True'};
 var $elm$core$Result$isOk = function (result) {
 	if (result.$ === 'Ok') {
 		return true;
@@ -5355,13 +5362,13 @@ var $author$project$Main$affichage = function (model) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				A2($elm$html$Html$Attributes$style, 'font-family', 'Arial, sans-serif'),
+				A2($elm$html$Html$Attributes$style, 'font-family', 'Comic Sans MS'),
 				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
 				A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
 				A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
 				A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
 				A2($elm$html$Html$Attributes$style, 'min-height', '100vh'),
-				A2($elm$html$Html$Attributes$style, 'background-color', '#f0f0f0')
+				A2($elm$html$Html$Attributes$style, 'background', 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)')
 			]),
 		_List_fromArray(
 			[
@@ -5369,20 +5376,23 @@ var $author$project$Main$affichage = function (model) {
 				$elm$html$Html$h1,
 				_List_fromArray(
 					[
-						A2($elm$html$Html$Attributes$style, 'color', '#333')
+						A2($elm$html$Html$Attributes$style, 'color', '#333'),
+						A2($elm$html$Html$Attributes$style, 'font-size', '2.5em'),
+						A2($elm$html$Html$Attributes$style, 'margin-bottom', '30px'),
+						A2($elm$html$Html$Attributes$style, 'text-shadow', '0 2px 4px rgba(0,0,0,0.1)')
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Dessin TcTurtle')
+						$elm$html$Html$text('Turtle Sans MS')
 					])),
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
 						A2($elm$html$Html$Attributes$style, 'background-color', 'white'),
-						A2($elm$html$Html$Attributes$style, 'padding', '20px'),
-						A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
-						A2($elm$html$Html$Attributes$style, 'box-shadow', '0 2px 5px rgba(0,0,0,0.1)'),
+						A2($elm$html$Html$Attributes$style, 'padding', '30px'),
+						A2($elm$html$Html$Attributes$style, 'border-radius', '16px'),
+						A2($elm$html$Html$Attributes$style, 'box-shadow', '0 8px 32px rgba(0,0,0,0.15)'),
 						A2($elm$html$Html$Attributes$style, 'max-width', '600px'),
 						A2($elm$html$Html$Attributes$style, 'width', '90%')
 					]),
@@ -5392,13 +5402,19 @@ var $author$project$Main$affichage = function (model) {
 						$elm$html$Html$textarea,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$placeholder('Ex: [Repeat 4 [Forward 50, Left 90]]'),
+								$elm$html$Html$Attributes$placeholder('Ex: [Repeat 360 [Forward 1, Left 1]]'),
 								$elm$html$Html$Attributes$value(model.saisi),
 								$elm$html$Html$Events$onInput($author$project$Main$ModifierSaisi),
 								A2($elm$html$Html$Attributes$style, 'width', '100%'),
-								A2($elm$html$Html$Attributes$style, 'height', '50px'),
+								A2($elm$html$Html$Attributes$style, 'height', '80px'),
 								A2($elm$html$Html$Attributes$style, 'box-sizing', 'border-box'),
-								A2($elm$html$Html$Attributes$style, 'resize', 'none')
+								A2($elm$html$Html$Attributes$style, 'padding', '12px'),
+								A2($elm$html$Html$Attributes$style, 'border', '2px solid #e0e0e0'),
+								A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
+								A2($elm$html$Html$Attributes$style, 'font-size', '14px'),
+								A2($elm$html$Html$Attributes$style, 'font-family', 'Comic Sans MS, monospace'),
+								A2($elm$html$Html$Attributes$style, 'resize', 'vertical'),
+								A2($elm$html$Html$Attributes$style, 'transition', 'border-color 0.3s ease')
 							]),
 						_List_Nil),
 						A2(
@@ -5406,8 +5422,9 @@ var $author$project$Main$affichage = function (model) {
 						_List_fromArray(
 							[
 								A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-								A2($elm$html$Html$Attributes$style, 'gap', '10px'),
-								A2($elm$html$Html$Attributes$style, 'margin-top', '16px')
+								A2($elm$html$Html$Attributes$style, 'gap', '12px'),
+								A2($elm$html$Html$Attributes$style, 'margin-top', '20px'),
+								A2($elm$html$Html$Attributes$style, 'justify-content', 'center')
 							]),
 						_List_fromArray(
 							[
@@ -5416,36 +5433,21 @@ var $author$project$Main$affichage = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$Events$onClick($author$project$Main$Dessiner),
-										A2($elm$html$Html$Attributes$style, 'padding', '10px 20px'),
-										A2($elm$html$Html$Attributes$style, 'background-color', '#007BFF'),
+										A2($elm$html$Html$Attributes$style, 'padding', '12px 28px'),
+										A2($elm$html$Html$Attributes$style, 'background', 'linear-gradient(135deg, #ff0000 0%, #5eff00 25%, #4e9acd 50%, #4547d1 75%, #ff00d4 100%)'),
 										A2($elm$html$Html$Attributes$style, 'color', 'white'),
 										A2($elm$html$Html$Attributes$style, 'border', 'none'),
-										A2($elm$html$Html$Attributes$style, 'border-radius', '4px'),
-										A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
+										A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
+										A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
+										A2($elm$html$Html$Attributes$style, 'font-family', 'Comic Sans MS'),
+										A2($elm$html$Html$Attributes$style, 'font-size', '16px'),
+										A2($elm$html$Html$Attributes$style, 'font-weight', '600'),
+										A2($elm$html$Html$Attributes$style, 'box-shadow', '0 4px 12px rgba(0, 0, 0, 0.3)'),
+										A2($elm$html$Html$Attributes$style, 'transition', 'all 0.3s ease')
 									]),
 								_List_fromArray(
 									[
 										$elm$html$Html$text('Dessiner')
-									])),
-								A2(
-								$elm$html$Html$button,
-								_List_fromArray(
-									[
-										$elm$html$Html$Events$onClick($author$project$Main$BasculerZoom),
-										A2($elm$html$Html$Attributes$style, 'padding', '10px 20px'),
-										A2(
-										$elm$html$Html$Attributes$style,
-										'background-color',
-										model.zoomAuto ? '#28a745' : '#6c757d'),
-										A2($elm$html$Html$Attributes$style, 'color', 'white'),
-										A2($elm$html$Html$Attributes$style, 'border', 'none'),
-										A2($elm$html$Html$Attributes$style, 'border-radius', '4px'),
-										A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text(
-										'Zoom auto: ' + (model.zoomAuto ? 'ON' : 'OFF'))
 									]))
 							]))
 					])),
@@ -5453,11 +5455,17 @@ var $author$project$Main$affichage = function (model) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						A2($elm$html$Html$Attributes$style, 'margin-top', '30px'),
-						A2($elm$html$Html$Attributes$style, 'padding', '20px'),
+						A2($elm$html$Html$Attributes$style, 'margin-top', '40px'),
+						A2($elm$html$Html$Attributes$style, 'padding', '30px'),
 						A2($elm$html$Html$Attributes$style, 'background-color', '#ffffff'),
-						A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
-						A2($elm$html$Html$Attributes$style, 'box-shadow', '0 2px 5px rgba(0,0,0,0.1)')
+						A2($elm$html$Html$Attributes$style, 'border-radius', '16px'),
+						A2($elm$html$Html$Attributes$style, 'box-shadow', '0 8px 32px rgba(0,0,0,0.15)'),
+						A2($elm$html$Html$Attributes$style, 'max-width', '900px'),
+						A2($elm$html$Html$Attributes$style, 'width', '90%'),
+						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
+						A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
+						A2($elm$html$Html$Attributes$style, 'min-height', '500px')
 					]),
 				_List_fromArray(
 					[
@@ -5465,19 +5473,19 @@ var $author$project$Main$affichage = function (model) {
 						var _v0 = model.dessin;
 						if (_v0.$ === 'Ok') {
 							var programme = _v0.a;
-							return A2($author$project$Drawing$afficher, model.zoomAuto, programme);
+							return A2($author$project$Drawing$afficher, true, programme);
 						} else {
 							var erreur = _v0.a;
 							return A2(
 								$elm$html$Html$div,
 								_List_fromArray(
 									[
-										A2($elm$html$Html$Attributes$style, 'color', 'red'),
+										A2($elm$html$Html$Attributes$style, 'color', '#d32f2f'),
 										A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
 										A2($elm$html$Html$Attributes$style, 'padding', '20px'),
-										A2($elm$html$Html$Attributes$style, 'background-color', '#fff0f0'),
-										A2($elm$html$Html$Attributes$style, 'border-radius', '4px'),
-										A2($elm$html$Html$Attributes$style, 'border', '1px solid #ffcccc')
+										A2($elm$html$Html$Attributes$style, 'background-color', '#ffebee'),
+										A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
+										A2($elm$html$Html$Attributes$style, 'border-left', '4px solid #d32f2f')
 									]),
 								_List_fromArray(
 									[
@@ -5724,8 +5732,7 @@ var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
 		{
 			dessin: $elm$core$Result$Err('Entrez un programme'),
-			saisi: '',
-			zoomAuto: true
+			saisi: ''
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -6041,19 +6048,20 @@ var $elm$parser$Parser$Advanced$spaces = $elm$parser$Parser$Advanced$chompWhile(
 			_Utils_chr('\r')));
 	});
 var $elm$parser$Parser$spaces = $elm$parser$Parser$Advanced$spaces;
-var $elm$parser$Parser$Expecting = function (a) {
-	return {$: 'Expecting', a: a};
+var $elm$parser$Parser$Advanced$succeed = function (a) {
+	return $elm$parser$Parser$Advanced$Parser(
+		function (s) {
+			return A3($elm$parser$Parser$Advanced$Good, false, a, s);
+		});
+};
+var $elm$parser$Parser$succeed = $elm$parser$Parser$Advanced$succeed;
+var $elm$parser$Parser$ExpectingSymbol = function (a) {
+	return {$: 'ExpectingSymbol', a: a};
 };
 var $elm$parser$Parser$Advanced$Token = F2(
 	function (a, b) {
 		return {$: 'Token', a: a, b: b};
 	});
-var $elm$parser$Parser$toToken = function (str) {
-	return A2(
-		$elm$parser$Parser$Advanced$Token,
-		str,
-		$elm$parser$Parser$Expecting(str));
-};
 var $elm$parser$Parser$Advanced$isSubString = _Parser_isSubString;
 var $elm$core$Basics$not = _Basics_not;
 var $elm$parser$Parser$Advanced$token = function (_v0) {
@@ -6076,23 +6084,14 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 				{col: newCol, context: s.context, indent: s.indent, offset: newOffset, row: newRow, src: s.src});
 		});
 };
-var $elm$parser$Parser$token = function (str) {
-	return $elm$parser$Parser$Advanced$token(
-		$elm$parser$Parser$toToken(str));
+var $elm$parser$Parser$Advanced$symbol = $elm$parser$Parser$Advanced$token;
+var $elm$parser$Parser$symbol = function (str) {
+	return $elm$parser$Parser$Advanced$symbol(
+		A2(
+			$elm$parser$Parser$Advanced$Token,
+			str,
+			$elm$parser$Parser$ExpectingSymbol(str)));
 };
-var $author$project$Parsing$motCle = function (str) {
-	return A2(
-		$elm$parser$Parser$ignorer,
-		$elm$parser$Parser$token(str),
-		$elm$parser$Parser$spaces);
-};
-var $elm$parser$Parser$Advanced$succeed = function (a) {
-	return $elm$parser$Parser$Advanced$Parser(
-		function (s) {
-			return A3($elm$parser$Parser$Advanced$Good, false, a, s);
-		});
-};
-var $elm$parser$Parser$succeed = $elm$parser$Parser$Advanced$succeed;
 var $author$project$Parsing$analyserAvancer = A2(
 	$elm$parser$Parser$keeper,
 	A2(
@@ -6100,7 +6099,7 @@ var $author$project$Parsing$analyserAvancer = A2(
 		A2(
 			$elm$parser$Parser$ignorer,
 			$elm$parser$Parser$succeed($author$project$Parsing$Forward),
-			$author$project$Parsing$motCle('Forward')),
+			$elm$parser$Parser$symbol('Forward')),
 		$elm$parser$Parser$spaces),
 	$elm$parser$Parser$int);
 var $author$project$Parsing$Right = function (a) {
@@ -6113,7 +6112,7 @@ var $author$project$Parsing$analyserDroite = A2(
 		A2(
 			$elm$parser$Parser$ignorer,
 			$elm$parser$Parser$succeed($author$project$Parsing$Right),
-			$author$project$Parsing$motCle('Right')),
+			$elm$parser$Parser$symbol('Right')),
 		$elm$parser$Parser$spaces),
 	$elm$parser$Parser$int);
 var $author$project$Parsing$Left = function (a) {
@@ -6126,7 +6125,7 @@ var $author$project$Parsing$analyserGauche = A2(
 		A2(
 			$elm$parser$Parser$ignorer,
 			$elm$parser$Parser$succeed($author$project$Parsing$Left),
-			$author$project$Parsing$motCle('Left')),
+			$elm$parser$Parser$symbol('Left')),
 		$elm$parser$Parser$spaces),
 	$elm$parser$Parser$int);
 var $elm$parser$Parser$Advanced$andThen = F2(
@@ -6302,17 +6301,6 @@ var $elm$parser$Parser$Advanced$oneOf = function (parsers) {
 		});
 };
 var $elm$parser$Parser$oneOf = $elm$parser$Parser$Advanced$oneOf;
-var $elm$parser$Parser$ExpectingSymbol = function (a) {
-	return {$: 'ExpectingSymbol', a: a};
-};
-var $elm$parser$Parser$Advanced$symbol = $elm$parser$Parser$Advanced$token;
-var $elm$parser$Parser$symbol = function (str) {
-	return $elm$parser$Parser$Advanced$symbol(
-		A2(
-			$elm$parser$Parser$Advanced$Token,
-			str,
-			$elm$parser$Parser$ExpectingSymbol(str)));
-};
 var $author$project$Parsing$virguleOptionnelle = $elm$parser$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -6400,7 +6388,7 @@ function $author$project$Parsing$cyclic$analyserRepeat() {
 				A2(
 					$elm$parser$Parser$ignorer,
 					$elm$parser$Parser$succeed($author$project$Parsing$Repeat),
-					$author$project$Parsing$motCle('Repeat')),
+					$elm$parser$Parser$symbol('Repeat')),
 				$elm$parser$Parser$spaces),
 			A2($elm$parser$Parser$ignorer, $elm$parser$Parser$int, $elm$parser$Parser$spaces)),
 		$elm$parser$Parser$lazy(
@@ -6507,27 +6495,20 @@ var $author$project$Parsing$lire = function (entree) {
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		switch (msg.$) {
-			case 'ModifierSaisi':
-				var saisi = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{saisi: saisi}),
-					$elm$core$Platform$Cmd$none);
-			case 'Dessiner':
-				var resultat = $author$project$Parsing$lire(model.saisi);
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{dessin: resultat}),
-					$elm$core$Platform$Cmd$none);
-			default:
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{zoomAuto: !model.zoomAuto}),
-					$elm$core$Platform$Cmd$none);
+		if (msg.$ === 'ModifierSaisi') {
+			var saisi = msg.a;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{saisi: saisi}),
+				$elm$core$Platform$Cmd$none);
+		} else {
+			var resultat = $author$project$Parsing$lire(model.saisi);
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{dessin: resultat}),
+				$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Main$main = $elm$browser$Browser$element(

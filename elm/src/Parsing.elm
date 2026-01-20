@@ -196,7 +196,7 @@ analyserRepeat : Parser Instruction
 analyserRepeat =
     succeed Repeat
         -- Consomme le mot-clé "Repeat"
-        |. motCle "Repeat"
+        |. symbol "Repeat"
         |. spaces
         -- Parse le nombre de répétitions
         |= int
@@ -226,7 +226,7 @@ analyserAvancer : Parser Instruction
 analyserAvancer =
     succeed Forward
         -- Consomme le mot-clé "Forward"
-        |. motCle "Forward"
+        |. symbol "Forward"
         |. spaces
         -- Parse la distance en pixels
         |= int
@@ -253,7 +253,7 @@ analyserGauche : Parser Instruction
 analyserGauche =
     succeed Left
         -- Consomme le mot-clé "Left"
-        |. motCle "Left"
+        |. symbol "Left"
         |. spaces
         -- Parse l'angle en degrés
         |= int
@@ -280,7 +280,7 @@ analyserDroite : Parser Instruction
 analyserDroite =
     succeed Right
         -- Consomme le mot-clé "Right"
-        |. motCle "Right"
+        |. symbol "Right"
         |. spaces
         -- Parse l'angle en degrés
         |= int
@@ -303,4 +303,4 @@ Rien (effectue juste la vérification et consommation)
 motCle : String -> Parser ()
 motCle str =
     -- Parse un mot-clé exact (case-sensitive) suivi d'espaces
-    token str |. spaces
+    symbol str |. spaces

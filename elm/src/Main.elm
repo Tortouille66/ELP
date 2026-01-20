@@ -14,12 +14,10 @@ import Drawing exposing (afficher)
 Champs:
 - `saisi`: le texte entré par l'utilisateur (le programme)
 - `dessin`: le résultat de l'analyse (liste d'instructions ou message d'erreur)
-- `zoomAuto`: active/désactive le zoom automatique pour adapter le dessin
 -}
 type alias Model =
     { saisi : String
     , dessin : Result String (List Instruction)
-    , zoomAuto : Bool
     }
 
 
@@ -27,12 +25,10 @@ type alias Model =
 
 - `ModifierSaisi`: l'utilisateur modifie le texte du programme
 - `Dessiner`: l'utilisateur appuie sur le bouton "Dessiner"
-- `BasculerZoom`: active ou désactive le zoom automatique
 -}
 type Msg
     = ModifierSaisi String
     | Dessiner
-    | BasculerZoom
 
 main : Program () Model Msg
 main =
@@ -54,7 +50,6 @@ init : () -> (Model, Cmd Msg)
 init _ =
     ( { saisi = ""
       , dessin = Err "Entrez un programme"
-      , zoomAuto = True
       }
     , Cmd.none
     )
@@ -62,11 +57,10 @@ init _ =
 
 {-| Traite les messages et met à jour le modèle
 
-Gère trois cas:
+Gère deux cas:
 
 1. **ModifierSaisi**: met à jour le texte saisi
 2. **Dessiner**: analyse et affiche le programme
-3. **BasculerZoom**: active/désactive le zoom automatique
 -}
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -82,12 +76,6 @@ update msg model =
                 resultat = Parsing.lire model.saisi
             in
             ( { model | dessin = resultat }
-            , Cmd.none
-            )
-
-        -- L'utilisateur bascule le zoom automatique
-        BasculerZoom ->
-            ( { model | zoomAuto = not model.zoomAuto }
             , Cmd.none
             )
 
@@ -107,94 +95,104 @@ Erreurs:
 affichage : Model -> Html Msg
 affichage model =
     div
-        [ style "font-family" "Arial, sans-serif"
+        [ style "font-family" "Comic Sans MS"
         , style "display" "flex"
         , style "flex-direction" "column"
         , style "align-items" "center"
         , style "justify-content" "center"
         , style "min-height" "100vh"
-        , style "background-color" "#f0f0f0"
+        , style "background" "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)"
         ]
         [ -- Titre principal
           h1
-            [ style "color" "#333" ]
-            [ text "Dessin TcTurtle" ]
+            [ style "color" "#333"
+            , style "font-size" "2.5em"
+            , style "margin-bottom" "30px"
+            , style "text-shadow" "0 2px 4px rgba(0,0,0,0.1)"
+            ]
+            [ text "Turtle Sans MS" ]
         
         -- Section d'entrée : zone de texte + boutons
         -- Contient la textarea pour le programme et les boutons de contrôle
         , div
             [ style "background-color" "white"
-            , style "padding" "20px"
-            , style "border-radius" "8px"
-            , style "box-shadow" "0 2px 5px rgba(0,0,0,0.1)"
+            , style "padding" "30px"
+            , style "border-radius" "16px"
+            , style "box-shadow" "0 8px 32px rgba(0,0,0,0.15)"
             , style "max-width" "600px"
             , style "width" "90%"
             ]
             [ -- Zone de texte pour l'entrée du programme
               textarea
-                [ placeholder "Ex: [Repeat 4 [Forward 50, Left 90]]"
+                [ placeholder "Ex: [Repeat 360 [Forward 1, Left 1]]"
                 , value model.saisi
                 , onInput ModifierSaisi
                 , style "width" "100%"
-                , style "height" "50px"
+                , style "height" "80px"
                 , style "box-sizing" "border-box"
-                , style "resize" "none"
+                , style "padding" "12px"
+                , style "border" "2px solid #e0e0e0"
+                , style "border-radius" "8px"
+                , style "font-size" "14px"
+                , style "font-family" "Comic Sans MS, monospace"
+                , style "resize" "vertical"
+                , style "transition" "border-color 0.3s ease"
                 ]
                 []
-            -- Boutons d'action
+            -- Bouton d'action
             , div
                 [ style "display" "flex"
-                , style "gap" "10px"
-                , style "margin-top" "16px"
+                , style "gap" "12px"
+                , style "margin-top" "20px"
+                , style "justify-content" "center"
                 ]
                 [ -- Bouton "Dessiner" : lance l'analyse et le rendu
                   button
                     [ onClick Dessiner
-                    , style "padding" "10px 20px"
-                    , style "background-color" "#007BFF"
+                    , style "padding" "12px 28px"
+                    , style "background" "linear-gradient(135deg, #ff0000 0%, #5eff00 25%, #4e9acd 50%, #4547d1 75%, #ff00d4 100%)"
                     , style "color" "white"
                     , style "border" "none"
-                    , style "border-radius" "4px"
+                    , style "border-radius" "8px"
                     , style "cursor" "pointer"
+                    , style "font-family" "Comic Sans MS"
+                    , style "font-size" "16px"
+                    , style "font-weight" "600"
+                    , style "box-shadow" "0 4px 12px rgba(0, 0, 0, 0.3)"
+                    , style "transition" "all 0.3s ease"
                     ]
                     [ text "Dessiner" ]
-                -- Bouton "Zoom auto" : bascule le mode zoom
-                -- Vert si actif, gris si inactif
-                , button
-                    [ onClick BasculerZoom
-                    , style "padding" "10px 20px"
-                    , style "background-color" (if model.zoomAuto then "#28a745" else "#6c757d")
-                    , style "color" "white"
-                    , style "border" "none"
-                    , style "border-radius" "4px"
-                    , style "cursor" "pointer"
-                    ]
-                    [ text ("Zoom auto: " ++ (if model.zoomAuto then "ON" else "OFF")) ]
                 ]
             ]
         
         -- Section d'affichage du résultat
         -- Affiche soit le dessin SVG, soit un message d'erreur
         , div
-            [ style "margin-top" "30px"
-            , style "padding" "20px"
+            [ style "margin-top" "40px"
+            , style "padding" "30px"
             , style "background-color" "#ffffff"
-            , style "border-radius" "8px"
-            , style "box-shadow" "0 2px 5px rgba(0,0,0,0.1)"
+            , style "border-radius" "16px"
+            , style "box-shadow" "0 8px 32px rgba(0,0,0,0.15)"
+            , style "max-width" "900px"
+            , style "width" "90%"
+            , style "display" "flex"
+            , style "justify-content" "center"
+            , style "align-items" "center"
+            , style "min-height" "500px"
             ]
             [ case model.dessin of
                 -- Cas succès : afficher le dessin
                 Ok programme ->
-                    afficher model.zoomAuto programme
+                    afficher True programme
                 -- Cas erreur : afficher le message d'erreur en rouge
                 Err erreur ->
                     div
-                        [ style "color" "red"
+                        [ style "color" "#d32f2f"
                         , style "font-weight" "bold"
                         , style "padding" "20px"
-                        , style "background-color" "#fff0f0"
-                        , style "border-radius" "4px"
-                        , style "border" "1px solid #ffcccc"
+                        , style "background-color" "#ffebee"
+                        , style "border-radius" "8px"
+                        , style "border-left" "4px solid #d32f2f"
                         ]
                         [ text erreur ]
             ]

@@ -1,9 +1,6 @@
-console.log("deck.js debug");
-
-
 export class Deck {
   constructor(cards) {
-    this.cards = [cards];
+    this.cards = [...cards];
     this.shuffle();
   }
 
@@ -32,6 +29,5 @@ export function buildDefaultDeck() {
   cards.push(0);
   return cards;
 }
-console.log(buildDefaultDeck())
 process.exit(0);
 cards.push(n)

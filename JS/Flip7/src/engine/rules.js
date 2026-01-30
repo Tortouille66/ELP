@@ -6,10 +6,10 @@ export const Rules = {
   applyDraw(player, card) {
     player.hand.push(card);
 
-    // ✅ Placeholder scoring: somme des cartes
+    // Placeholder scoring: somme des cartes
     player.roundPoints = player.hand.reduce((a, b) => a + b, 0);
 
-    // ✅ Placeholder bust: si on tire un doublon, on bust
+    // Placeholder bust: si on tire un doublon, on bust
     const counts = new Map();
     for (const c of player.hand) counts.set(c, (counts.get(c) ?? 0) + 1);
     const hasDuplicate = [...counts.values()].some(v => v >= 2);

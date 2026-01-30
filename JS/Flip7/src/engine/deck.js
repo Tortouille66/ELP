@@ -29,5 +29,3 @@ export function buildDefaultDeck() {
   cards.push(0);
   return cards;
 }
-process.exit(0);
-cards.push(n)

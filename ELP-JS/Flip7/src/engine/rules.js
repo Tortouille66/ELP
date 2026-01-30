@@ -17,9 +17,9 @@ export const Rules = {
     if (hasDuplicate) {
       player.busted = true;
       player.stopped = true; 
-      player.roundPoints = 0;
+      player.roundPoints = 0; 
     }
-
+//
     return {
       card,
       roundPoints: player.roundPoints,

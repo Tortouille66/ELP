@@ -60,7 +60,7 @@ async function main() {
         console.log(`\n${p.name} s'arrête pour cette manche.`);
         await ask("\nEntrée pour continuer...");
       }
-
+//
       game.nextPlayer();
     }
 

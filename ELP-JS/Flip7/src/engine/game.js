@@ -22,7 +22,7 @@ export class Game {
       players: this.players.map(p => ({ id: p.id, name: p.name }))
     });
   }
-
+//
   get currentPlayer() {
     return this.players[this.currentIndex];
   }

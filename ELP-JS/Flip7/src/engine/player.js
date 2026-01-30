@@ -13,7 +13,7 @@ export class Player {
 
   resetForNewRound() {
     this.hand = [];
-    this.roundPoints = 0;
+    this.roundPoints = 0;//
     this.stopped = false;
     this.busted = false;
   }

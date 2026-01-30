@@ -22,7 +22,7 @@ export class Game {
       players: this.players.map(p => ({ id: p.id, name: p.name }))
     });
   }
-
+//
   get currentPlayer() {
     return this.players[this.currentIndex];
   }
@@ -84,5 +84,36 @@ export class Game {
     });
 
     return { type: "stop" };
+  }
+
+
+  endRoundAndApplyScores() {
+    const results = [];
+
+    for (const p of this.players) {
+      const gained = p.busted ? 0 : p.roundPoints;
+      p.totalScore += gained;
+
+      results.push({
+        id: p.id,
+        name: p.name,
+        gained,
+        total: p.totalScore,
+        busted: p.busted
+      });
+    }
+
+    this.logger?.log({
+      type: "round_end",
+      round: this.round,
+      results
+    });
+
+    this.round += 1;
+    return results;
+  }
+
+  getWinner(targetScore = 200) {
+    return this.players.find(p => p.totalScore >= targetScore) ?? null;
   }
 }

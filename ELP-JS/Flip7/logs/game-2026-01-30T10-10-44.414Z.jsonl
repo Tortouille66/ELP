@@ -1,9 +1,0 @@
-{"t":"2026-01-30T10:10:44.415Z","type":"round_start","round":1,"players":[{"id":1,"name":"1"},{"id":2,"name":"2"}]}
-{"t":"2026-01-30T10:10:50.130Z","type":"draw","round":1,"playerId":1,"playerName":"1","cardDrawn":12,"hand":[12],"roundPoints":12,"busted":false}
-{"t":"2026-01-30T10:10:59.109Z","type":"draw","round":1,"playerId":2,"playerName":"2","cardDrawn":7,"hand":[7],"roundPoints":7,"busted":false}
-{"t":"2026-01-30T10:11:01.418Z","type":"draw","round":1,"playerId":1,"playerName":"1","cardDrawn":8,"hand":[12,8],"roundPoints":20,"busted":false}
-{"t":"2026-01-30T10:11:03.915Z","type":"draw","round":1,"playerId":2,"playerName":"2","cardDrawn":9,"hand":[7,9],"roundPoints":16,"busted":false}
-{"t":"2026-01-30T10:11:08.230Z","type":"draw","round":1,"playerId":1,"playerName":"1","cardDrawn":2,"hand":[12,8,2],"roundPoints":22,"busted":false}
-{"t":"2026-01-30T10:11:20.056Z","type":"draw","round":1,"playerId":2,"playerName":"2","cardDrawn":7,"hand":[7,9,7],"roundPoints":23,"busted":true}
-{"t":"2026-01-30T10:11:20.063Z","type":"bust","round":1,"playerId":2,"playerName":"2"}
-{"t":"2026-01-30T10:11:26.026Z","type":"stop","round":1,"playerId":1,"playerName":"1","hand":[12,8,2],"roundPoints":22}

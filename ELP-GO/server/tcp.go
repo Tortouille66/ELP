@@ -74,7 +74,7 @@ func handleClient(conn net.Conn) {
 	}
 
 	// 3) Détection de contours
-	edges := imageproc.ApplySobelBinary(img, 8, 200) //seuil à régler ici, ex : 300 = net
+	edges := imageproc.ApplySobelBinary(img, 8, 100) //seuil à régler ici, ex : 300 = net
 
 	// 4) Encoder en PNG
 	pngBytes, err := imageproc.EncodeMatrixToPNG(edges)

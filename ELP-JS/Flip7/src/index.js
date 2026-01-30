@@ -21,47 +21,71 @@ async function main() {
   const logger = new Logger();
   const game = new Game({ players, logger });
 
-  game.startNewRound();
+  const TARGET_SCORE = 200;
 
-  // Boucle de manche
-  while (!Rules.isRoundOver(game.players)) {
-    const p = game.currentPlayer;
+  while (true) {
+    game.startNewRound();
 
-    clearScreen();
-    renderGameState({ round: game.round, currentPlayer: p, players: game.players });
+    // ===== BOUCLE D’UNE MANCHE =====
+    while (!Rules.isRoundOver(game.players)) {
+      const p = game.currentPlayer;
 
-    renderTurnPrompt(p);
-    const choice = await ask("> ");
+      clearScreen();
+      renderGameState({
+        round: game.round,
+        currentPlayer: p,
+        players: game.players
+      });
 
-    if (choice === "1") {
-      const res = game.drawForCurrentPlayer();
-      if (res.type === "draw") {
-        console.log(`\n${p.name} tire: ${res.card} | Points manche: ${res.roundPoints}`);
-        if (res.busted) console.log(` ${p.name} a BUST (doublon placeholder) !`);
-      } else {
-        console.log("\nPlus de cartes dans le deck (placeholder).");
+      renderTurnPrompt(p);
+      const choice = await ask("> ");
+
+      if (choice === "1") {
+        const res = game.drawForCurrentPlayer();
+
+        if (res.type === "draw") {
+          console.log(`\n${p.name} tire la carte : ${res.card}`);
+          // console.log(`Points de la manche : ${res.roundPoints}`);
+        }
+
+        if (res.busted) {
+          console.log(` ${p.name} a BUST !`);
+        }
+
+
+        await ask("\nEntrée pour continuer...");
       }
-      await ask("\nEntrée pour continuer...");
-    } else if (choice === "2") {
-      game.stopCurrentPlayer();
-      console.log(`\n${p.name} s'arrête.`);
-      await ask("\nEntrée pour continuer...");
-    } else {
-      console.log("\nChoix invalide.");
-      await ask("\nEntrée pour continuer...");
+      else if (choice === "2") {
+        game.stopCurrentPlayer();
+        console.log(`\n${p.name} s'arrête pour cette manche.`);
+        await ask("\nEntrée pour continuer...");
+      }
+
+      game.nextPlayer();
     }
 
-    game.nextPlayer();
+    // ===== FIN DE MANCHE =====
+    clearScreen();
+    console.log(`=== Fin de la manche ${game.round} ===\n`);
+
+    const results = game.endRoundAndApplyScores();
+    for (const r of results) {
+      console.log(
+        `${r.name}: ${r.busted ? "BUST (0)" : "+" + r.gained} | Total: ${r.total}`
+      );
+    }
+
+    const winner = game.getWinner(TARGET_SCORE);
+    if (winner) {
+      console.log(`\n🏆 ${winner.name} gagne la partie avec ${winner.totalScore} points !`);
+      break;
+    }
+
+    await ask("\nNouvelle manche ? (Entrée)");
   }
 
-  clearScreen();
-  console.log("=== Fin de manche (placeholder) ===\n");
-  for (const p of game.players) {
-    console.log(`${p.name}: ${p.busted ? "BUST" : p.roundPoints + " pts"} | Main: [${p.hand.join(", ")}]`);
-  }
-
-  console.log("\nLog enregistré dans:", game.logger.filePath);
   closePrompt();
+
 }
 
 main().catch(err => {

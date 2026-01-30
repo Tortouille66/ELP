@@ -7,6 +7,8 @@ export class Player {
     this.roundPoints = 0;
     this.stopped = false;
     this.busted = false;
+
+    this.totalScore = 0;
   }
 
   resetForNewRound() {

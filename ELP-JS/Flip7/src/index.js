@@ -37,7 +37,7 @@ async function main() {
       const res = game.drawForCurrentPlayer();
       if (res.type === "draw") {
         console.log(`\n${p.name} tire: ${res.card} | Points manche: ${res.roundPoints}`);
-        if (res.busted) console.log(`⚠️ ${p.name} a BUST (doublon placeholder) !`);
+        if (res.busted) console.log(` ${p.name} a BUST (doublon placeholder) !`);
       } else {
         console.log("\nPlus de cartes dans le deck (placeholder).");
       }

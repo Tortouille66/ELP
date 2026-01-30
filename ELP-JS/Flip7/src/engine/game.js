@@ -8,13 +8,13 @@ export class Game {
 
     this.round = 1;
     this.currentIndex = 0;
-    this.deck = new Deck(buildDefaultDeckDeckSafe());
+    this.deck = new Deck(buildDefaultDeck());
   }
 
   startNewRound() {
     this.players.forEach(p => p.resetForNewRound());
     this.currentIndex = 0;
-    this.deck = new Deck(buildDefaultDeckDeckSafe());
+    this.deck = new Deck(buildDefaultDeck());
 
     this.logger?.log({
       type: "round_start",
@@ -28,7 +28,6 @@ export class Game {
   }
 
   nextPlayer() {
-    // saute les joueurs déjà stop/bust
     for (let i = 0; i < this.players.length; i++) {
       this.currentIndex = (this.currentIndex + 1) % this.players.length;
       const p = this.players[this.currentIndex];
@@ -40,8 +39,8 @@ export class Game {
   drawForCurrentPlayer() {
     const p = this.currentPlayer;
     const card = this.deck.draw();
+
     if (card === null) {
-      // deck vide -> fin de manche (placeholder)
       p.stopped = true;
       return { type: "deck_empty" };
     }
@@ -86,9 +85,4 @@ export class Game {
 
     return { type: "stop" };
   }
-}
-
-// petite protection au cas où buildDefaultDeck n'existe pas
-function buildDefaultDeckDeckSafe() {
-  return buildDefaultDeck();
 }

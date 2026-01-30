@@ -8,7 +8,7 @@ export function renderGameState({ round, currentPlayer, players }) {
 
   for (const p of players) {
     const isCurrent = p.id === currentPlayer.id;
-    const prefix = isCurrent ? "👉 " : "   ";
+    const prefix = isCurrent ? "" : "   ";
 
     // On masque les cartes des autres joueurs si tu veux (ici on montre tout pour debug)
     console.log(

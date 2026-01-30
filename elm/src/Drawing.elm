@@ -1,5 +1,5 @@
 
-module Drawing exposing (afficher)
+module Drawing exposing (afficher, traiter, traiterInstruction, Tortue, Ligne, Point)
 
 import Parsing exposing (Instruction(..))
 import Svg exposing (..)

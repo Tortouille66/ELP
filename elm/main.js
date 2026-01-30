@@ -4588,10 +4588,19 @@ var $elm$core$Set$toList = function (_v0) {
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
+var $author$project$Main$AfficherInfoNiveau = {$: 'AfficherInfoNiveau'};
+var $author$project$Main$DemarrerFreeMode = {$: 'DemarrerFreeMode'};
+var $author$project$Main$DemarrerLevelMode = {$: 'DemarrerLevelMode'};
 var $author$project$Main$Dessiner = {$: 'Dessiner'};
+var $author$project$Levels$FreeMode = {$: 'FreeMode'};
+var $author$project$Levels$LevelMode = function (a) {
+	return {$: 'LevelMode', a: a};
+};
 var $author$project$Main$ModifierSaisi = function (a) {
 	return {$: 'ModifierSaisi', a: a};
 };
+var $author$project$Main$NiveauPrecedent = {$: 'NiveauPrecedent'};
+var $author$project$Main$ProchainNiveau = {$: 'ProchainNiveau'};
 var $elm$core$Basics$True = {$: 'True'};
 var $elm$core$Basics$add = _Basics_add;
 var $elm$core$Basics$apR = F2(
@@ -5289,9 +5298,125 @@ var $author$project$Drawing$afficher = F2(
 				]),
 			A2($elm$core$List$map, $author$project$Drawing$dessinerLigne, etatFinal.lignes));
 	});
+var $elm$html$Html$br = _VirtualDom_node('br');
 var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$core$String$contains = _String_contains;
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $author$project$Main$getButtonColor = F2(
+	function (currentMode, buttonMode) {
+		var _v0 = _Utils_Tuple2(currentMode, buttonMode);
+		_v0$2:
+		while (true) {
+			if (_v0.a.$ === 'FreeMode') {
+				if (_v0.b.$ === 'FreeMode') {
+					var _v1 = _v0.a;
+					var _v2 = _v0.b;
+					return '#4CAF50';
+				} else {
+					break _v0$2;
+				}
+			} else {
+				if (_v0.b.$ === 'LevelMode') {
+					return '#2196F3';
+				} else {
+					break _v0$2;
+				}
+			}
+		}
+		return '#cccccc';
+	});
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $author$project$Levels$tousLesNiveaux = _List_fromArray(
+	[
+		{
+		description: 'Dessine un cercle de rayon 50',
+		formes: _List_fromArray(
+			['Cercle']),
+		nom: 'Le Cercle',
+		numero: 1,
+		taille: 50
+	},
+		{
+		description: 'Dessine un carré de côté 80',
+		formes: _List_fromArray(
+			['Carré']),
+		nom: 'Le Carré',
+		numero: 2,
+		taille: 80
+	},
+		{
+		description: 'Dessine un triangle de côté 60',
+		formes: _List_fromArray(
+			['Triangle']),
+		nom: 'Le Triangle',
+		numero: 3,
+		taille: 60
+	},
+		{
+		description: 'Dessine une étoile à 5 branches de rayon 70',
+		formes: _List_fromArray(
+			['Étoile']),
+		nom: 'L\'Étoile',
+		numero: 4,
+		taille: 70
+	},
+		{
+		description: 'Dessine n\'importe quelle combinaison de cercle (50), carré (80) ou triangle (60)',
+		formes: _List_fromArray(
+			['Cercle', 'Carré', 'Triangle']),
+		nom: 'Maître des Formes',
+		numero: 5,
+		taille: 0
+	},
+		{
+		description: 'Dessine une combinaison d\'étoile (70) et de cercle (50)',
+		formes: _List_fromArray(
+			['Étoile', 'Cercle']),
+		nom: 'Créativité Sans Limites',
+		numero: 6,
+		taille: 0
+	}
+	]);
+var $author$project$Levels$getLevel = function (numero) {
+	return $elm$core$List$head(
+		A2(
+			$elm$core$List$filter,
+			function (level) {
+				return _Utils_eq(level.numero, numero);
+			},
+			$author$project$Levels$tousLesNiveaux));
+};
+var $author$project$Levels$getLevelDescription = function (numero) {
+	var _v0 = $author$project$Levels$getLevel(numero);
+	if (_v0.$ === 'Just') {
+		var level = _v0.a;
+		return 'Niveau ' + ($elm$core$String$fromInt(level.numero) + (': ' + (level.nom + ('\n' + level.description))));
+	} else {
+		return 'Niveau invalide';
+	}
+};
+var $author$project$Levels$getTotalLevels = $elm$core$List$length($author$project$Levels$tousLesNiveaux);
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -5368,7 +5493,8 @@ var $author$project$Main$affichage = function (model) {
 				A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
 				A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
 				A2($elm$html$Html$Attributes$style, 'min-height', '100vh'),
-				A2($elm$html$Html$Attributes$style, 'background', 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)')
+				A2($elm$html$Html$Attributes$style, 'background', 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'),
+				A2($elm$html$Html$Attributes$style, 'padding', '20px')
 			]),
 		_List_fromArray(
 			[
@@ -5378,12 +5504,163 @@ var $author$project$Main$affichage = function (model) {
 					[
 						A2($elm$html$Html$Attributes$style, 'color', '#333'),
 						A2($elm$html$Html$Attributes$style, 'font-size', '2.5em'),
-						A2($elm$html$Html$Attributes$style, 'margin-bottom', '30px'),
+						A2($elm$html$Html$Attributes$style, 'margin-bottom', '20px'),
 						A2($elm$html$Html$Attributes$style, 'text-shadow', '0 2px 4px rgba(0,0,0,0.1)')
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Turtle Sans MS')
+						$elm$html$Html$text('🐢 Turtle Drawing Game')
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'background-color', 'white'),
+						A2($elm$html$Html$Attributes$style, 'padding', '20px'),
+						A2($elm$html$Html$Attributes$style, 'border-radius', '12px'),
+						A2($elm$html$Html$Attributes$style, 'box-shadow', '0 4px 16px rgba(0,0,0,0.1)'),
+						A2($elm$html$Html$Attributes$style, 'margin-bottom', '20px'),
+						A2($elm$html$Html$Attributes$style, 'min-width', '500px')
+					]),
+				_List_fromArray(
+					[
+						function () {
+						var _v0 = model.gameMode;
+						if (_v0.$ === 'FreeMode') {
+							return A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										A2($elm$html$Html$Attributes$style, 'color', '#4CAF50'),
+										A2($elm$html$Html$Attributes$style, 'font-size', '18px'),
+										A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
+										A2($elm$html$Html$Attributes$style, 'text-align', 'center')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Mode Libre 🎨')
+									]));
+						} else {
+							return A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+										A2($elm$html$Html$Attributes$style, 'justify-content', 'space-between'),
+										A2($elm$html$Html$Attributes$style, 'align-items', 'center')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$button,
+										_List_fromArray(
+											[
+												$elm$html$Html$Events$onClick($author$project$Main$NiveauPrecedent),
+												A2($elm$html$Html$Attributes$style, 'padding', '8px 16px'),
+												A2($elm$html$Html$Attributes$style, 'background-color', '#FF9800'),
+												A2($elm$html$Html$Attributes$style, 'color', 'white'),
+												A2($elm$html$Html$Attributes$style, 'border', 'none'),
+												A2($elm$html$Html$Attributes$style, 'border-radius', '6px'),
+												A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
+												A2($elm$html$Html$Attributes$style, 'font-weight', 'bold')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('◀ Précédent')
+											])),
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
+												A2($elm$html$Html$Attributes$style, 'font-size', '18px'),
+												A2($elm$html$Html$Attributes$style, 'color', '#2196F3')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(
+												'Niveau ' + ($elm$core$String$fromInt(model.currentLevel) + (' / ' + $elm$core$String$fromInt($author$project$Levels$getTotalLevels))))
+											])),
+										A2(
+										$elm$html$Html$button,
+										_List_fromArray(
+											[
+												$elm$html$Html$Events$onClick($author$project$Main$ProchainNiveau),
+												A2($elm$html$Html$Attributes$style, 'padding', '8px 16px'),
+												A2($elm$html$Html$Attributes$style, 'background-color', '#4CAF50'),
+												A2($elm$html$Html$Attributes$style, 'color', 'white'),
+												A2($elm$html$Html$Attributes$style, 'border', 'none'),
+												A2($elm$html$Html$Attributes$style, 'border-radius', '6px'),
+												A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
+												A2($elm$html$Html$Attributes$style, 'font-weight', 'bold')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Suivant ▶')
+											]))
+									]));
+						}
+					}()
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2($elm$html$Html$Attributes$style, 'gap', '20px'),
+						A2($elm$html$Html$Attributes$style, 'margin-bottom', '20px')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Main$DemarrerFreeMode),
+								A2($elm$html$Html$Attributes$style, 'padding', '12px 28px'),
+								A2(
+								$elm$html$Html$Attributes$style,
+								'background-color',
+								A2($author$project$Main$getButtonColor, model.gameMode, $author$project$Levels$FreeMode)),
+								A2($elm$html$Html$Attributes$style, 'color', 'white'),
+								A2($elm$html$Html$Attributes$style, 'border', 'none'),
+								A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
+								A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
+								A2($elm$html$Html$Attributes$style, 'font-family', 'Comic Sans MS'),
+								A2($elm$html$Html$Attributes$style, 'font-size', '16px'),
+								A2($elm$html$Html$Attributes$style, 'font-weight', '600'),
+								A2($elm$html$Html$Attributes$style, 'box-shadow', '0 4px 12px rgba(0, 0, 0, 0.2)')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Mode Libre 🎨')
+							])),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Main$DemarrerLevelMode),
+								A2($elm$html$Html$Attributes$style, 'padding', '12px 28px'),
+								A2(
+								$elm$html$Html$Attributes$style,
+								'background-color',
+								A2(
+									$author$project$Main$getButtonColor,
+									model.gameMode,
+									$author$project$Levels$LevelMode(1))),
+								A2($elm$html$Html$Attributes$style, 'color', 'white'),
+								A2($elm$html$Html$Attributes$style, 'border', 'none'),
+								A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
+								A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
+								A2($elm$html$Html$Attributes$style, 'font-family', 'Comic Sans MS'),
+								A2($elm$html$Html$Attributes$style, 'font-size', '16px'),
+								A2($elm$html$Html$Attributes$style, 'font-weight', '600'),
+								A2($elm$html$Html$Attributes$style, 'box-shadow', '0 4px 12px rgba(0, 0, 0, 0.2)')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Mode Niveaux 📈')
+							]))
 					])),
 				A2(
 				$elm$html$Html$div,
@@ -5394,7 +5671,7 @@ var $author$project$Main$affichage = function (model) {
 						A2($elm$html$Html$Attributes$style, 'border-radius', '16px'),
 						A2($elm$html$Html$Attributes$style, 'box-shadow', '0 8px 32px rgba(0,0,0,0.15)'),
 						A2($elm$html$Html$Attributes$style, 'max-width', '600px'),
-						A2($elm$html$Html$Attributes$style, 'width', '90%')
+						A2($elm$html$Html$Attributes$style, 'width', '100%')
 					]),
 				_List_fromArray(
 					[
@@ -5447,10 +5724,100 @@ var $author$project$Main$affichage = function (model) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('Dessiner')
+										$elm$html$Html$text('Dessiner 🎨')
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onClick($author$project$Main$AfficherInfoNiveau),
+										A2($elm$html$Html$Attributes$style, 'padding', '12px 28px'),
+										A2($elm$html$Html$Attributes$style, 'background-color', '#9C27B0'),
+										A2($elm$html$Html$Attributes$style, 'color', 'white'),
+										A2($elm$html$Html$Attributes$style, 'border', 'none'),
+										A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
+										A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
+										A2($elm$html$Html$Attributes$style, 'font-family', 'Comic Sans MS'),
+										A2($elm$html$Html$Attributes$style, 'font-size', '16px'),
+										A2($elm$html$Html$Attributes$style, 'font-weight', '600'),
+										A2($elm$html$Html$Attributes$style, 'box-shadow', '0 4px 12px rgba(0, 0, 0, 0.3)')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('ℹ️ Aide')
 									]))
 							]))
 					])),
+				model.showLevelInfo ? A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'background-color', 'white'),
+						A2($elm$html$Html$Attributes$style, 'padding', '20px'),
+						A2($elm$html$Html$Attributes$style, 'border-radius', '12px'),
+						A2($elm$html$Html$Attributes$style, 'box-shadow', '0 4px 16px rgba(0,0,0,0.1)'),
+						A2($elm$html$Html$Attributes$style, 'max-width', '600px'),
+						A2($elm$html$Html$Attributes$style, 'width', '100%'),
+						A2($elm$html$Html$Attributes$style, 'margin-top', '20px'),
+						A2($elm$html$Html$Attributes$style, 'border-left', '4px solid #2196F3')
+					]),
+				_List_fromArray(
+					[
+						function () {
+						var _v1 = model.gameMode;
+						if (_v1.$ === 'FreeMode') {
+							return A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										A2($elm$html$Html$Attributes$style, 'color', '#333'),
+										A2($elm$html$Html$Attributes$style, 'line-height', '1.6')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Mode libre: Crée ce que tu veux avec tes propres commandes!'),
+										A2($elm$html$Html$br, _List_Nil, _List_Nil),
+										$elm$html$Html$text('Formes reconnues: Cercle, Carré, Triangle, Étoile')
+									]));
+						} else {
+							return A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										A2($elm$html$Html$Attributes$style, 'color', '#333'),
+										A2($elm$html$Html$Attributes$style, 'line-height', '1.6'),
+										A2($elm$html$Html$Attributes$style, 'white-space', 'pre-wrap')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$author$project$Levels$getLevelDescription(model.currentLevel))
+									]));
+						}
+					}()
+					])) : $elm$html$Html$text(''),
+				(model.levelMessage !== '') ? A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'background-color', 'white'),
+						A2($elm$html$Html$Attributes$style, 'padding', '15px'),
+						A2($elm$html$Html$Attributes$style, 'border-radius', '10px'),
+						A2($elm$html$Html$Attributes$style, 'box-shadow', '0 4px 12px rgba(0,0,0,0.1)'),
+						A2($elm$html$Html$Attributes$style, 'max-width', '600px'),
+						A2($elm$html$Html$Attributes$style, 'width', '100%'),
+						A2($elm$html$Html$Attributes$style, 'margin-top', '15px'),
+						A2($elm$html$Html$Attributes$style, 'text-align', 'center'),
+						A2(
+						$elm$html$Html$Attributes$style,
+						'color',
+						(A2($elm$core$String$contains, '✓', model.levelMessage) || A2($elm$core$String$contains, '🎉', model.levelMessage)) ? '#4CAF50' : '#FF9800'),
+						A2($elm$html$Html$Attributes$style, 'font-weight', 'bold')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(model.levelMessage)
+					])) : $elm$html$Html$text(''),
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -5461,7 +5828,7 @@ var $author$project$Main$affichage = function (model) {
 						A2($elm$html$Html$Attributes$style, 'border-radius', '16px'),
 						A2($elm$html$Html$Attributes$style, 'box-shadow', '0 8px 32px rgba(0,0,0,0.15)'),
 						A2($elm$html$Html$Attributes$style, 'max-width', '900px'),
-						A2($elm$html$Html$Attributes$style, 'width', '90%'),
+						A2($elm$html$Html$Attributes$style, 'width', '100%'),
 						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
 						A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
 						A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
@@ -5470,12 +5837,12 @@ var $author$project$Main$affichage = function (model) {
 				_List_fromArray(
 					[
 						function () {
-						var _v0 = model.dessin;
-						if (_v0.$ === 'Ok') {
-							var programme = _v0.a;
+						var _v2 = model.dessin;
+						if (_v2.$ === 'Ok') {
+							var programme = _v2.a;
 							return A2($author$project$Drawing$afficher, true, programme);
 						} else {
-							var erreur = _v0.a;
+							var erreur = _v2.a;
 							return A2(
 								$elm$html$Html$div,
 								_List_fromArray(
@@ -5485,7 +5852,10 @@ var $author$project$Main$affichage = function (model) {
 										A2($elm$html$Html$Attributes$style, 'padding', '20px'),
 										A2($elm$html$Html$Attributes$style, 'background-color', '#ffebee'),
 										A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
-										A2($elm$html$Html$Attributes$style, 'border-left', '4px solid #d32f2f')
+										A2($elm$html$Html$Attributes$style, 'border-left', '4px solid #d32f2f'),
+										A2($elm$html$Html$Attributes$style, 'white-space', 'pre-wrap'),
+										A2($elm$html$Html$Attributes$style, 'max-height', '300px'),
+										A2($elm$html$Html$Attributes$style, 'overflow-y', 'auto')
 									]),
 								_List_fromArray(
 									[
@@ -5514,7 +5884,6 @@ var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
 		return {fragment: fragment, host: host, path: path, port_: port_, protocol: protocol, query: query};
 	});
-var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
 var $elm$core$String$slice = _String_slice;
 var $elm$core$String$dropLeft = F2(
@@ -5731,8 +6100,12 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
 		{
+			currentLevel: 1,
 			dessin: $elm$core$Result$Err('Entrez un programme'),
-			saisi: ''
+			gameMode: $author$project$Levels$FreeMode,
+			levelMessage: '',
+			saisi: '',
+			showLevelInfo: false
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -6493,22 +6866,476 @@ var $author$project$Parsing$lire = function (entree) {
 		},
 		A2($elm$parser$Parser$run, $author$project$Parsing$analyserProgramme, entree));
 };
+var $author$project$Validation$FormeInconnue = {$: 'FormeInconnue'};
+var $elm$core$List$isEmpty = function (xs) {
+	if (!xs.b) {
+		return true;
+	} else {
+		return false;
+	}
+};
+var $elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
+		while (true) {
+			if (!list.b) {
+				return false;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
+				} else {
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
+				}
+			}
+		}
+	});
+var $elm$core$List$member = F2(
+	function (x, xs) {
+		return A2(
+			$elm$core$List$any,
+			function (a) {
+				return _Utils_eq(a, x);
+			},
+			xs);
+	});
+var $author$project$Validation$shapeTypeToString = function (shape) {
+	switch (shape.$) {
+		case 'Cercle':
+			return 'Cercle';
+		case 'Carré':
+			return 'Carré';
+		case 'Triangle':
+			return 'Triangle';
+		case 'Étoile':
+			return 'Étoile';
+		default:
+			return 'Forme inconnue';
+	}
+};
+var $author$project$Validation$Carré = {$: 'Carré'};
+var $author$project$Validation$testCarrePatterns = F2(
+	function (instructions, expectedSize) {
+		_v0$3:
+		while (true) {
+			if (instructions.b) {
+				if (!instructions.b.b) {
+					if ((instructions.a.$ === 'Repeat') && (instructions.a.a === 4)) {
+						var _v1 = instructions.a;
+						var innerInstructions = _v1.b;
+						_v2$2:
+						while (true) {
+							if (((innerInstructions.b && (innerInstructions.a.$ === 'Forward')) && innerInstructions.b.b) && (!innerInstructions.b.b.b)) {
+								switch (innerInstructions.b.a.$) {
+									case 'Left':
+										if (innerInstructions.b.a.a === 90) {
+											var dist = innerInstructions.a.a;
+											var _v3 = innerInstructions.b;
+											return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Carré ✓', shapeType: $author$project$Validation$Carré} : {
+												isValid: false,
+												message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+												shapeType: $author$project$Validation$Carré
+											};
+										} else {
+											break _v2$2;
+										}
+									case 'Right':
+										if (innerInstructions.b.a.a === 90) {
+											var dist = innerInstructions.a.a;
+											var _v4 = innerInstructions.b;
+											return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Carré ✓', shapeType: $author$project$Validation$Carré} : {
+												isValid: false,
+												message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+												shapeType: $author$project$Validation$Carré
+											};
+										} else {
+											break _v2$2;
+										}
+									default:
+										break _v2$2;
+								}
+							} else {
+								break _v2$2;
+							}
+						}
+						return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+					} else {
+						break _v0$3;
+					}
+				} else {
+					if ((((((((((instructions.a.$ === 'Forward') && instructions.b.b.b) && (instructions.b.b.a.$ === 'Forward')) && instructions.b.b.b.b) && instructions.b.b.b.b.b) && (instructions.b.b.b.b.a.$ === 'Forward')) && instructions.b.b.b.b.b.b) && instructions.b.b.b.b.b.b.b) && (instructions.b.b.b.b.b.b.a.$ === 'Forward')) && (!instructions.b.b.b.b.b.b.b.b)) {
+						switch (instructions.b.a.$) {
+							case 'Left':
+								if (((((instructions.b.a.a === 90) && (instructions.b.b.b.a.$ === 'Left')) && (instructions.b.b.b.a.a === 90)) && (instructions.b.b.b.b.b.a.$ === 'Left')) && (instructions.b.b.b.b.b.a.a === 90)) {
+									var d1 = instructions.a.a;
+									var _v5 = instructions.b;
+									var _v6 = _v5.b;
+									var d2 = _v6.a.a;
+									var _v7 = _v6.b;
+									var _v8 = _v7.b;
+									var d3 = _v8.a.a;
+									var _v9 = _v8.b;
+									var _v10 = _v9.b;
+									var d4 = _v10.a.a;
+									return (_Utils_eq(d1, d2) && (_Utils_eq(d2, d3) && _Utils_eq(d3, d4))) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Carré ✓', shapeType: $author$project$Validation$Carré} : {
+										isValid: false,
+										message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+										shapeType: $author$project$Validation$Carré
+									}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+								} else {
+									break _v0$3;
+								}
+							case 'Right':
+								if (((((instructions.b.a.a === 90) && (instructions.b.b.b.a.$ === 'Right')) && (instructions.b.b.b.a.a === 90)) && (instructions.b.b.b.b.b.a.$ === 'Right')) && (instructions.b.b.b.b.b.a.a === 90)) {
+									var d1 = instructions.a.a;
+									var _v11 = instructions.b;
+									var _v12 = _v11.b;
+									var d2 = _v12.a.a;
+									var _v13 = _v12.b;
+									var _v14 = _v13.b;
+									var d3 = _v14.a.a;
+									var _v15 = _v14.b;
+									var _v16 = _v15.b;
+									var d4 = _v16.a.a;
+									return (_Utils_eq(d1, d2) && (_Utils_eq(d2, d3) && _Utils_eq(d3, d4))) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Carré ✓', shapeType: $author$project$Validation$Carré} : {
+										isValid: false,
+										message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+										shapeType: $author$project$Validation$Carré
+									}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+								} else {
+									break _v0$3;
+								}
+							default:
+								break _v0$3;
+						}
+					} else {
+						break _v0$3;
+					}
+				}
+			} else {
+				break _v0$3;
+			}
+		}
+		return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+	});
+var $author$project$Validation$Cercle = {$: 'Cercle'};
+var $author$project$Validation$testCerclePatterns = F2(
+	function (instructions, expectedSize) {
+		if (((instructions.b && (instructions.a.$ === 'Repeat')) && (instructions.a.a === 360)) && (!instructions.b.b)) {
+			var _v1 = instructions.a;
+			var innerInstructions = _v1.b;
+			if (((((innerInstructions.b && (innerInstructions.a.$ === 'Forward')) && innerInstructions.b.b) && (innerInstructions.b.a.$ === 'Left')) && (innerInstructions.b.a.a === 1)) && (!innerInstructions.b.b.b)) {
+				var dist = innerInstructions.a.a;
+				var _v3 = innerInstructions.b;
+				return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Cercle ✓', shapeType: $author$project$Validation$Cercle} : {
+					isValid: false,
+					message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+					shapeType: $author$project$Validation$Cercle
+				};
+			} else {
+				return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+			}
+		} else {
+			return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+		}
+	});
+var $author$project$Validation$Étoile = {$: 'Étoile'};
+var $author$project$Validation$testEtoilePatterns = F2(
+	function (instructions, expectedSize) {
+		if (((instructions.b && (instructions.a.$ === 'Repeat')) && (instructions.a.a === 5)) && (!instructions.b.b)) {
+			var _v1 = instructions.a;
+			var innerInstructions = _v1.b;
+			_v2$2:
+			while (true) {
+				if ((((((innerInstructions.b && (innerInstructions.a.$ === 'Forward')) && innerInstructions.b.b) && innerInstructions.b.b.b) && (innerInstructions.b.b.a.$ === 'Forward')) && innerInstructions.b.b.b.b) && (!innerInstructions.b.b.b.b.b)) {
+					switch (innerInstructions.b.a.$) {
+						case 'Left':
+							if (((innerInstructions.b.a.a === 144) && (innerInstructions.b.b.b.a.$ === 'Left')) && (innerInstructions.b.b.b.a.a === 36)) {
+								var d1 = innerInstructions.a.a;
+								var _v3 = innerInstructions.b;
+								var _v4 = _v3.b;
+								var d2 = _v4.a.a;
+								var _v5 = _v4.b;
+								return _Utils_eq(d1, d2) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Étoile ✓', shapeType: $author$project$Validation$Étoile} : {
+									isValid: false,
+									message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+									shapeType: $author$project$Validation$Étoile
+								}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+							} else {
+								break _v2$2;
+							}
+						case 'Right':
+							if (((innerInstructions.b.a.a === 144) && (innerInstructions.b.b.b.a.$ === 'Right')) && (innerInstructions.b.b.b.a.a === 36)) {
+								var d1 = innerInstructions.a.a;
+								var _v6 = innerInstructions.b;
+								var _v7 = _v6.b;
+								var d2 = _v7.a.a;
+								var _v8 = _v7.b;
+								return _Utils_eq(d1, d2) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Étoile ✓', shapeType: $author$project$Validation$Étoile} : {
+									isValid: false,
+									message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+									shapeType: $author$project$Validation$Étoile
+								}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+							} else {
+								break _v2$2;
+							}
+						default:
+							break _v2$2;
+					}
+				} else {
+					break _v2$2;
+				}
+			}
+			return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+		} else {
+			return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+		}
+	});
+var $author$project$Validation$Triangle = {$: 'Triangle'};
+var $author$project$Validation$testTrianglePatterns = F2(
+	function (instructions, expectedSize) {
+		_v0$3:
+		while (true) {
+			if (instructions.b) {
+				if (!instructions.b.b) {
+					if ((instructions.a.$ === 'Repeat') && (instructions.a.a === 3)) {
+						var _v1 = instructions.a;
+						var innerInstructions = _v1.b;
+						_v2$2:
+						while (true) {
+							if (((innerInstructions.b && (innerInstructions.a.$ === 'Forward')) && innerInstructions.b.b) && (!innerInstructions.b.b.b)) {
+								switch (innerInstructions.b.a.$) {
+									case 'Left':
+										if (innerInstructions.b.a.a === 120) {
+											var dist = innerInstructions.a.a;
+											var _v3 = innerInstructions.b;
+											return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Triangle ✓', shapeType: $author$project$Validation$Triangle} : {
+												isValid: false,
+												message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+												shapeType: $author$project$Validation$Triangle
+											};
+										} else {
+											break _v2$2;
+										}
+									case 'Right':
+										if (innerInstructions.b.a.a === 120) {
+											var dist = innerInstructions.a.a;
+											var _v4 = innerInstructions.b;
+											return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Triangle ✓', shapeType: $author$project$Validation$Triangle} : {
+												isValid: false,
+												message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+												shapeType: $author$project$Validation$Triangle
+											};
+										} else {
+											break _v2$2;
+										}
+									default:
+										break _v2$2;
+								}
+							} else {
+								break _v2$2;
+							}
+						}
+						return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+					} else {
+						break _v0$3;
+					}
+				} else {
+					if (((((((instructions.a.$ === 'Forward') && instructions.b.b.b) && (instructions.b.b.a.$ === 'Forward')) && instructions.b.b.b.b) && instructions.b.b.b.b.b) && (instructions.b.b.b.b.a.$ === 'Forward')) && (!instructions.b.b.b.b.b.b)) {
+						switch (instructions.b.a.$) {
+							case 'Left':
+								if (((instructions.b.a.a === 120) && (instructions.b.b.b.a.$ === 'Left')) && (instructions.b.b.b.a.a === 120)) {
+									var d1 = instructions.a.a;
+									var _v5 = instructions.b;
+									var _v6 = _v5.b;
+									var d2 = _v6.a.a;
+									var _v7 = _v6.b;
+									var _v8 = _v7.b;
+									var d3 = _v8.a.a;
+									return (_Utils_eq(d1, d2) && _Utils_eq(d2, d3)) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Triangle ✓', shapeType: $author$project$Validation$Triangle} : {
+										isValid: false,
+										message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+										shapeType: $author$project$Validation$Triangle
+									}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+								} else {
+									break _v0$3;
+								}
+							case 'Right':
+								if (((instructions.b.a.a === 120) && (instructions.b.b.b.a.$ === 'Right')) && (instructions.b.b.b.a.a === 120)) {
+									var d1 = instructions.a.a;
+									var _v9 = instructions.b;
+									var _v10 = _v9.b;
+									var d2 = _v10.a.a;
+									var _v11 = _v10.b;
+									var _v12 = _v11.b;
+									var d3 = _v12.a.a;
+									return (_Utils_eq(d1, d2) && _Utils_eq(d2, d3)) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Triangle ✓', shapeType: $author$project$Validation$Triangle} : {
+										isValid: false,
+										message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
+										shapeType: $author$project$Validation$Triangle
+									}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+								} else {
+									break _v0$3;
+								}
+							default:
+								break _v0$3;
+						}
+					} else {
+						break _v0$3;
+					}
+				}
+			} else {
+				break _v0$3;
+			}
+		}
+		return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+	});
+var $author$project$Validation$validateCommand = F3(
+	function (instructions, expectedShapes, expectedSize) {
+		if ($elm$core$List$isEmpty(instructions)) {
+			return {isValid: false, message: 'Aucune instruction. Essaie de nouveau !', shapeType: $author$project$Validation$FormeInconnue};
+		} else {
+			var testTriangleListe = A2($author$project$Validation$testTrianglePatterns, instructions, expectedSize);
+			var testEtoileListe = A2($author$project$Validation$testEtoilePatterns, instructions, expectedSize);
+			var testCercleListe = A2($author$project$Validation$testCerclePatterns, instructions, expectedSize);
+			var testCarreListe = A2($author$project$Validation$testCarrePatterns, instructions, expectedSize);
+			var allValid = _Utils_ap(
+				testCercleListe.isValid ? _List_fromArray(
+					[testCercleListe]) : _List_Nil,
+				_Utils_ap(
+					testCarreListe.isValid ? _List_fromArray(
+						[testCarreListe]) : _List_Nil,
+					_Utils_ap(
+						testTriangleListe.isValid ? _List_fromArray(
+							[testTriangleListe]) : _List_Nil,
+						testEtoileListe.isValid ? _List_fromArray(
+							[testEtoileListe]) : _List_Nil)));
+			var _v0 = $elm$core$List$head(allValid);
+			if (_v0.$ === 'Just') {
+				var result = _v0.a;
+				var shapeName = $author$project$Validation$shapeTypeToString(result.shapeType);
+				return A2($elm$core$List$member, shapeName, expectedShapes) ? result : {isValid: false, message: 'Cette forme n\'est pas attendue pour ce niveau.', shapeType: result.shapeType};
+			} else {
+				return {isValid: false, message: 'Commande non reconnue. Essaie: Cercle, Carré, Triangle ou Étoile !', shapeType: $author$project$Validation$FormeInconnue};
+			}
+		}
+	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'ModifierSaisi') {
-			var saisi = msg.a;
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{saisi: saisi}),
-				$elm$core$Platform$Cmd$none);
-		} else {
-			var resultat = $author$project$Parsing$lire(model.saisi);
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{dessin: resultat}),
-				$elm$core$Platform$Cmd$none);
+		switch (msg.$) {
+			case 'ModifierSaisi':
+				var saisi = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{saisi: saisi}),
+					$elm$core$Platform$Cmd$none);
+			case 'Dessiner':
+				var resultat = $author$project$Parsing$lire(model.saisi);
+				var validationMessage = function () {
+					if (resultat.$ === 'Ok') {
+						var instructions = resultat.a;
+						var _v2 = model.gameMode;
+						if (_v2.$ === 'FreeMode') {
+							var validation = A3($author$project$Validation$validateCommand, instructions, _List_Nil, 0);
+							return 'Dessin créé ! ' + validation.message;
+						} else {
+							var _v3 = $author$project$Levels$getLevel(model.currentLevel);
+							if (_v3.$ === 'Just') {
+								var level = _v3.a;
+								var validation = A3($author$project$Validation$validateCommand, instructions, level.formes, level.taille);
+								return validation.isValid ? ('✓ Bravo ! Niveau complété ! 🎉 ' + validation.message) : ('❌ ' + validation.message);
+							} else {
+								return 'Erreur: niveau introuvable';
+							}
+						}
+					} else {
+						return '';
+					}
+				}();
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{dessin: resultat, levelMessage: validationMessage}),
+					$elm$core$Platform$Cmd$none);
+			case 'DemarrerFreeMode':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							dessin: $elm$core$Result$Err('Mode libre - Crée librement !'),
+							gameMode: $author$project$Levels$FreeMode,
+							levelMessage: 'Mode libre activé ! Dessine ce que tu veux 🎨',
+							saisi: ''
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'DemarrerLevelMode':
+				var descr = $author$project$Levels$getLevelDescription(1);
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							currentLevel: 1,
+							dessin: $elm$core$Result$Err(descr),
+							gameMode: $author$project$Levels$LevelMode(1),
+							levelMessage: 'Mode niveaux activé ! Commence au niveau 1',
+							saisi: '',
+							showLevelInfo: true
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'ProchainNiveau':
+				if (_Utils_cmp(model.currentLevel, $author$project$Levels$getTotalLevels) < 0) {
+					var newLevel = model.currentLevel + 1;
+					var levelDescr = $author$project$Levels$getLevelDescription(newLevel);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								currentLevel: newLevel,
+								dessin: $elm$core$Result$Err(levelDescr),
+								levelMessage: 'Niveau ' + ($elm$core$String$fromInt(newLevel) + ' débloqué ! 🎉'),
+								saisi: ''
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{levelMessage: 'Tu as fini tous les niveaux ! 🏆'}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 'NiveauPrecedent':
+				if (model.currentLevel > 1) {
+					var newLevel = model.currentLevel - 1;
+					var levelDescr = $author$project$Levels$getLevelDescription(newLevel);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								currentLevel: newLevel,
+								dessin: $elm$core$Result$Err(levelDescr),
+								levelMessage: 'Retour au niveau ' + $elm$core$String$fromInt(newLevel),
+								saisi: ''
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{levelMessage: 'Tu es déjà au premier niveau'}),
+						$elm$core$Platform$Cmd$none);
+				}
+			default:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{showLevelInfo: !model.showLevelInfo}),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Main$main = $elm$browser$Browser$element(

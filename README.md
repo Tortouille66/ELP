@@ -105,7 +105,7 @@ cd ELP-ELM
 elm reactor
 ```
 
-Puis ouvrir un navigateur à l’adresse indiquée (généralement `http://localhost:8000`) et sélectionner le fichier principal.
+Puis ouvrir un navigateur à l’adresse indiquée (généralement `http://localhost:8000`) et cliquer sur app.html
 
 ---
 

@@ -44,7 +44,13 @@ async function main() {
         const res = game.drawForCurrentPlayer();
 
         if (res.type === "draw") {
-          console.log(`\n${p.name} tire la carte : ${res.card}`);
+          const cardStr =
+            typeof res.card === "number"
+              ? String(res.card)
+              : (res.card && res.card.kind) ? res.card.kind : "?";
+
+          console.log(`\n${p.name} tire: ${cardStr} | Points manche: ${res.roundPoints}`);
+          //console.log(`\n${p.name} tire la carte : ${res.card}`);
           // console.log(`Points de la manche : ${res.roundPoints}`);
         }
 
@@ -77,7 +83,7 @@ async function main() {
 
     const winner = game.getWinner(TARGET_SCORE);
     if (winner) {
-      console.log(`\n🏆 ${winner.name} gagne la partie avec ${winner.totalScore} points !`);
+      console.log(`\n ${winner.name} gagne la partie avec ${winner.totalScore} points !`);
       break;
     }
 

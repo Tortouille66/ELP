@@ -1,3 +1,9 @@
+function cardToString(card) {
+  if (typeof card === "number") return String(card);
+  if (card && typeof card === "object" && card.kind) return card.kind;
+  return "?";
+}
+
 export function clearScreen() {
   // Efface l'écran + remet le curseur en haut (simple et cross-platform)
   process.stdout.write("\x1b[2J\x1b[0f");
@@ -12,7 +18,7 @@ export function renderGameState({ round, currentPlayer, players }) {
 
     // On masque les cartes des autres joueurs si tu veux (ici on montre tout pour debug)
     console.log(
-      `${prefix}${p.name} | STOP=${p.stopped ? "oui" : "non"} | Main: [${p.hand.join(", ")}] | Points manche: ${p.roundPoints}`
+      `${prefix}${p.name} | STOP=${p.stopped ? "oui" : "non"} | Main: [${p.hand.map(cardToString).join(", ")}] | Points manche: ${p.roundPoints}`
     );
   }
 

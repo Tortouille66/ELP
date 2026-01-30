@@ -72,14 +72,14 @@ Nous avons réalisé plusieurs test dans le dossier ELP-GO/client/.
 
 ### Utilisation
 
-L'utilisation de ce programme est assez particulière car il faut dans un premier temps lancer le serveur TCP. c'est à dire aller dans le dossier ELP-GO en effectuant ces commandes. 
+L'utilisation de ce programme est assez particulière car il faut dans un premier temps lancer le serveur TCP dans un premier terminal c'est à dire aller dans le dossier ELP-GO en effectuant ces commandes. 
 
 ```bash
 cd ELP-GO
 go run .
 ```
 
-Ensuite après avoir enregistrer  votre image à contourer dans le bon format (PNG ou JPEG) et dans le bon dossier (client/). Il ne reste qu'à exécuter ces commandes. En sachant que image_à_contourer.png et votre image et contour.png sera le résultat de la détéction de contour par convolution. 
+Ensuite après avoir enregistrer  votre image à contourer dans le bon format (PNG ou JPEG) et dans le bon dossier (client/). Il ne reste qu'à exécuter ces commandes dans un autre terminal. En sachant que image_à_contourer.png et votre image et contour.png sera le résultat de la détéction de contour par convolution. 
 
 ```bash
 cd ELP-GO/client/
@@ -92,7 +92,7 @@ go run . <image_à_contourer>.png  <contour>.png
 
 ### Description
 
-Le dossier **ELP-ELM** contient l’implémentation d'un site TC Sans Turtle (Référence à la police 'Comics Sans') dont le but est de donner une intérface graphique simple pour effectuer des commandes Turtle (Langage de programmation Dessin).
+Le dossier **ELP-ELM** contient l’implémentation d'un site Turtle Sans Ms (Référence à la police 'Comics Sans Ms') dont le but est de donner une intérface graphique simple pour effectuer des commandes Turtle (Langage de programmation Dessin).
 
 ### Prérequis
 

@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>🐢 Turtle Drawing Game</title>
+    <title>Turtle Sans MS</title>
+    <link rel="icon" type="image/x-icon" href="static/icone.ico">
     <style>
         * {
             margin: 0;
@@ -11,9 +12,17 @@
         }
         body {
             font-family: 'Comic Sans MS', cursive;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            /* Dégradé multicolore animé */
+            background: linear-gradient(135deg, #ff9ad3 0%, #f9805f 20%, #4e5cfc 40%, #4cfc66 60%, #f6e657 80%, #fe543a 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
             min-height: 100vh;
             padding: 0;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         #app {
             min-height: 100vh;

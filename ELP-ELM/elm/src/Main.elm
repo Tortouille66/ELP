@@ -119,9 +119,9 @@ update msg model =
                                                 validation = validateCommand instructions level.formes level.taille
                                             in
                                             if validation.isValid then
-                                                "✓ Bravo ! Niveau complété ! 🎉 " ++ validation.message
+                                                "Bravo ! Niveau complété ! " ++ validation.message
                                             else
-                                                "❌ " ++ validation.message
+                                                "NUUUUL !" ++ validation.message
                                         Nothing ->
                                             "Erreur: niveau introuvable"
                         Err _ ->
@@ -135,9 +135,9 @@ update msg model =
         DemarrerFreeMode ->
             ( { model 
               | gameMode = FreeMode
-              , levelMessage = "Mode libre activé ! Dessine ce que tu veux 🎨"
+              , levelMessage = "Mode libre activé ! Dessine ce que tu veux"
               , saisi = ""
-              , dessin = Err "Mode libre - Crée librement !"
+              , dessin = Err "Mode libre"
               }
             , Cmd.none
             )
@@ -167,14 +167,14 @@ update msg model =
                 in
                 ( { model 
                   | currentLevel = newLevel
-                  , levelMessage = "Niveau " ++ String.fromInt newLevel ++ " débloqué ! 🎉"
+                  , levelMessage = "Niveau " ++ String.fromInt newLevel ++ " débloqué !"
                   , dessin = Err levelDescr
                   , saisi = ""
                   }
                 , Cmd.none
                 )
             else
-                ( { model | levelMessage = "Tu as fini tous les niveaux ! 🏆" }
+                ( { model | levelMessage = "Tu as fini tous les niveaux ! Tu est le GOAT de TC" }
                 , Cmd.none
                 )
 
@@ -232,7 +232,7 @@ affichage model =
         , style "align-items" "center"
         , style "justify-content" "center"
         , style "min-height" "100vh"
-        , style "background" "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)"
+        , style "background" "transparent"
         , style "padding" "20px"
         ]
         [ -- Titre principal
@@ -242,7 +242,7 @@ affichage model =
             , style "margin-bottom" "20px"
             , style "text-shadow" "0 2px 4px rgba(0,0,0,0.1)"
             ]
-            [ text "🐢 Turtle Drawing Game" ]
+            [ text "Turtle Sans MS" ]
         
         -- Affichage du mode actuel
         , div
@@ -261,7 +261,7 @@ affichage model =
                         , style "font-weight" "bold"
                         , style "text-align" "center"
                         ]
-                        [ text "Mode Libre 🎨" ]
+                        [ text "Mode Libre " ]
                 LevelMode _ ->
                     div
                         [ style "display" "flex"
@@ -318,7 +318,7 @@ affichage model =
                 , style "font-weight" "600"
                 , style "box-shadow" "0 4px 12px rgba(0, 0, 0, 0.2)"
                 ]
-                [ text "Mode Libre 🎨" ]
+                [ text "Mode Libre " ]
             , button
                 [ onClick DemarrerLevelMode
                 , style "padding" "12px 28px"
@@ -332,7 +332,7 @@ affichage model =
                 , style "font-weight" "600"
                 , style "box-shadow" "0 4px 12px rgba(0, 0, 0, 0.2)"
                 ]
-                [ text "Mode Niveaux 📈" ]
+                [ text "Mode Niveaux" ]
             ]
         
         -- Section d'entrée
@@ -382,21 +382,7 @@ affichage model =
                     , style "box-shadow" "0 4px 12px rgba(0, 0, 0, 0.3)"
                     , style "transition" "all 0.3s ease"
                     ]
-                    [ text "Dessiner 🎨" ]
-                , button
-                    [ onClick AfficherInfoNiveau
-                    , style "padding" "12px 28px"
-                    , style "background-color" "#9C27B0"
-                    , style "color" "white"
-                    , style "border" "none"
-                    , style "border-radius" "8px"
-                    , style "cursor" "pointer"
-                    , style "font-family" "Comic Sans MS"
-                    , style "font-size" "16px"
-                    , style "font-weight" "600"
-                    , style "box-shadow" "0 4px 12px rgba(0, 0, 0, 0.3)"
-                    ]
-                    [ text "ℹ️ Aide" ]
+                    [ text "Dessiner " ]
                 ]
             ]
         
@@ -419,8 +405,6 @@ affichage model =
                             , style "line-height" "1.6"
                             ]
                             [ text "Mode libre: Crée ce que tu veux avec tes propres commandes!"
-                            , br [] []
-                            , text "Formes reconnues: Cercle, Carré, Triangle, Étoile"
                             ]
                     LevelMode _ ->
                         div
@@ -433,8 +417,8 @@ affichage model =
           else
             text ""
         
-        -- Message de feedback
-        , if model.levelMessage /= "" then
+        -- Message de feedback (masqué en mode Libre)
+        , if model.levelMessage /= "" && model.gameMode /= FreeMode then
             div
                 [ style "background-color" "white"
                 , style "padding" "15px"
@@ -444,11 +428,10 @@ affichage model =
                 , style "width" "100%"
                 , style "margin-top" "15px"
                 , style "text-align" "center"
-                , style "color" (if String.contains "✓" model.levelMessage || String.contains "🎉" model.levelMessage then "#4CAF50" else "#FF9800")
+                , style "color" (if String.contains "✓" model.levelMessage || String.contains "" model.levelMessage then "#4CAF50" else "#FF9800")
                 , style "font-weight" "bold"
                 ]
-                [ text model.levelMessage ]
-          else
+                [ text model.levelMessage ]          else
             text ""
         
         -- Section d'affichage du résultat

@@ -64,27 +64,12 @@ tousLesNiveaux =
     , -- Niveau 4: Étoile à 5 branches
       { numero = 4
       , nom = "L'Étoile"
-      , description = "Dessine une étoile à 5 branches de rayon 70"
+      , description = "Dessine une étoile à 5 branches de taille 70"
       , formes = ["Étoile"]
       , taille = 70
-      }
+      }]
     
-    , -- Niveau 5: Plusieurs formes
-      { numero = 5
-      , nom = "Maître des Formes"
-      , description = "Dessine n'importe quelle combinaison de cercle (50), carré (80) ou triangle (60)"
-      , formes = ["Cercle", "Carré", "Triangle"]
-      , taille = 0  -- Pas de taille unique
-      }
-    
-    , -- Niveau 6: Étoile avec autres formes
-      { numero = 6
-      , nom = "Créativité Sans Limites"
-      , description = "Dessine une combinaison d'étoile (70) et de cercle (50)"
-      , formes = ["Étoile", "Cercle"]
-      , taille = 0
-      }
-    ]
+   
 
 
 {-| Retourne le nombre total de niveaux -}

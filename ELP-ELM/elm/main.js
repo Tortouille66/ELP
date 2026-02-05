@@ -4588,7 +4588,6 @@ var $elm$core$Set$toList = function (_v0) {
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
-var $author$project$Main$AfficherInfoNiveau = {$: 'AfficherInfoNiveau'};
 var $author$project$Main$DemarrerFreeMode = {$: 'DemarrerFreeMode'};
 var $author$project$Main$DemarrerLevelMode = {$: 'DemarrerLevelMode'};
 var $author$project$Main$Dessiner = {$: 'Dessiner'};
@@ -5298,7 +5297,6 @@ var $author$project$Drawing$afficher = F2(
 				]),
 			A2($elm$core$List$map, $author$project$Drawing$dessinerLigne, etatFinal.lignes));
 	});
-var $elm$html$Html$br = _VirtualDom_node('br');
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$core$String$contains = _String_contains;
 var $elm$html$Html$div = _VirtualDom_node('div');
@@ -5372,28 +5370,12 @@ var $author$project$Levels$tousLesNiveaux = _List_fromArray(
 		taille: 60
 	},
 		{
-		description: 'Dessine une étoile à 5 branches de rayon 70',
+		description: 'Dessine une étoile à 5 branches de taille 70',
 		formes: _List_fromArray(
 			['Étoile']),
 		nom: 'L\'Étoile',
 		numero: 4,
 		taille: 70
-	},
-		{
-		description: 'Dessine n\'importe quelle combinaison de cercle (50), carré (80) ou triangle (60)',
-		formes: _List_fromArray(
-			['Cercle', 'Carré', 'Triangle']),
-		nom: 'Maître des Formes',
-		numero: 5,
-		taille: 0
-	},
-		{
-		description: 'Dessine une combinaison d\'étoile (70) et de cercle (50)',
-		formes: _List_fromArray(
-			['Étoile', 'Cercle']),
-		nom: 'Créativité Sans Limites',
-		numero: 6,
-		taille: 0
 	}
 	]);
 var $author$project$Levels$getLevel = function (numero) {
@@ -5493,7 +5475,7 @@ var $author$project$Main$affichage = function (model) {
 				A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
 				A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
 				A2($elm$html$Html$Attributes$style, 'min-height', '100vh'),
-				A2($elm$html$Html$Attributes$style, 'background', 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'),
+				A2($elm$html$Html$Attributes$style, 'background', 'transparent'),
 				A2($elm$html$Html$Attributes$style, 'padding', '20px')
 			]),
 		_List_fromArray(
@@ -5509,7 +5491,7 @@ var $author$project$Main$affichage = function (model) {
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text('🐢 Turtle Drawing Game')
+						$elm$html$Html$text('Turtle Sans MS')
 					])),
 				A2(
 				$elm$html$Html$div,
@@ -5538,7 +5520,7 @@ var $author$project$Main$affichage = function (model) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('Mode Libre 🎨')
+										$elm$html$Html$text('Mode Libre ')
 									]));
 						} else {
 							return A2(
@@ -5633,7 +5615,7 @@ var $author$project$Main$affichage = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Mode Libre 🎨')
+								$elm$html$Html$text('Mode Libre ')
 							])),
 						A2(
 						$elm$html$Html$button,
@@ -5659,7 +5641,7 @@ var $author$project$Main$affichage = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Mode Niveaux 📈')
+								$elm$html$Html$text('Mode Niveaux')
 							]))
 					])),
 				A2(
@@ -5724,27 +5706,7 @@ var $author$project$Main$affichage = function (model) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('Dessiner 🎨')
-									])),
-								A2(
-								$elm$html$Html$button,
-								_List_fromArray(
-									[
-										$elm$html$Html$Events$onClick($author$project$Main$AfficherInfoNiveau),
-										A2($elm$html$Html$Attributes$style, 'padding', '12px 28px'),
-										A2($elm$html$Html$Attributes$style, 'background-color', '#9C27B0'),
-										A2($elm$html$Html$Attributes$style, 'color', 'white'),
-										A2($elm$html$Html$Attributes$style, 'border', 'none'),
-										A2($elm$html$Html$Attributes$style, 'border-radius', '8px'),
-										A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
-										A2($elm$html$Html$Attributes$style, 'font-family', 'Comic Sans MS'),
-										A2($elm$html$Html$Attributes$style, 'font-size', '16px'),
-										A2($elm$html$Html$Attributes$style, 'font-weight', '600'),
-										A2($elm$html$Html$Attributes$style, 'box-shadow', '0 4px 12px rgba(0, 0, 0, 0.3)')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text('ℹ️ Aide')
+										$elm$html$Html$text('Dessiner ')
 									]))
 							]))
 					])),
@@ -5775,9 +5737,7 @@ var $author$project$Main$affichage = function (model) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('Mode libre: Crée ce que tu veux avec tes propres commandes!'),
-										A2($elm$html$Html$br, _List_Nil, _List_Nil),
-										$elm$html$Html$text('Formes reconnues: Cercle, Carré, Triangle, Étoile')
+										$elm$html$Html$text('Mode libre: Crée ce que tu veux avec tes propres commandes!')
 									]));
 						} else {
 							return A2(
@@ -5796,7 +5756,7 @@ var $author$project$Main$affichage = function (model) {
 						}
 					}()
 					])) : $elm$html$Html$text(''),
-				(model.levelMessage !== '') ? A2(
+				((model.levelMessage !== '') && (!_Utils_eq(model.gameMode, $author$project$Levels$FreeMode))) ? A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
@@ -5811,7 +5771,7 @@ var $author$project$Main$affichage = function (model) {
 						A2(
 						$elm$html$Html$Attributes$style,
 						'color',
-						(A2($elm$core$String$contains, '✓', model.levelMessage) || A2($elm$core$String$contains, '🎉', model.levelMessage)) ? '#4CAF50' : '#FF9800'),
+						(A2($elm$core$String$contains, '✓', model.levelMessage) || A2($elm$core$String$contains, '', model.levelMessage)) ? '#4CAF50' : '#FF9800'),
 						A2($elm$html$Html$Attributes$style, 'font-weight', 'bold')
 					]),
 				_List_fromArray(
@@ -6936,11 +6896,7 @@ var $author$project$Validation$testCarrePatterns = F2(
 										if (innerInstructions.b.a.a === 90) {
 											var dist = innerInstructions.a.a;
 											var _v3 = innerInstructions.b;
-											return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Carré ✓', shapeType: $author$project$Validation$Carré} : {
-												isValid: false,
-												message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
-												shapeType: $author$project$Validation$Carré
-											};
+											return (dist === 80) ? {isValid: true, message: 'Carré validé', shapeType: $author$project$Validation$Carré} : {isValid: false, message: 'Taille incorrecte', shapeType: $author$project$Validation$Carré};
 										} else {
 											break _v2$2;
 										}
@@ -6948,11 +6904,7 @@ var $author$project$Validation$testCarrePatterns = F2(
 										if (innerInstructions.b.a.a === 90) {
 											var dist = innerInstructions.a.a;
 											var _v4 = innerInstructions.b;
-											return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Carré ✓', shapeType: $author$project$Validation$Carré} : {
-												isValid: false,
-												message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
-												shapeType: $author$project$Validation$Carré
-											};
+											return (dist === 80) ? {isValid: true, message: 'Carré validé', shapeType: $author$project$Validation$Carré} : {isValid: false, message: 'Taille incorrecte', shapeType: $author$project$Validation$Carré};
 										} else {
 											break _v2$2;
 										}
@@ -6982,11 +6934,7 @@ var $author$project$Validation$testCarrePatterns = F2(
 									var _v9 = _v8.b;
 									var _v10 = _v9.b;
 									var d4 = _v10.a.a;
-									return (_Utils_eq(d1, d2) && (_Utils_eq(d2, d3) && _Utils_eq(d3, d4))) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Carré ✓', shapeType: $author$project$Validation$Carré} : {
-										isValid: false,
-										message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
-										shapeType: $author$project$Validation$Carré
-									}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+									return (_Utils_eq(d1, d2) && (_Utils_eq(d2, d3) && _Utils_eq(d3, d4))) ? ((d1 === 90) ? {isValid: true, message: 'Carré validé', shapeType: $author$project$Validation$Carré} : {isValid: false, message: 'Taille incorrecte', shapeType: $author$project$Validation$Carré}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
 								} else {
 									break _v0$3;
 								}
@@ -7002,11 +6950,7 @@ var $author$project$Validation$testCarrePatterns = F2(
 									var _v15 = _v14.b;
 									var _v16 = _v15.b;
 									var d4 = _v16.a.a;
-									return (_Utils_eq(d1, d2) && (_Utils_eq(d2, d3) && _Utils_eq(d3, d4))) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Carré ✓', shapeType: $author$project$Validation$Carré} : {
-										isValid: false,
-										message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
-										shapeType: $author$project$Validation$Carré
-									}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+									return (_Utils_eq(d1, d2) && (_Utils_eq(d2, d3) && _Utils_eq(d3, d4))) ? ((d1 === 80) ? {isValid: true, message: 'Carré validé', shapeType: $author$project$Validation$Carré} : {isValid: false, message: 'Taille incorrecte', shapeType: $author$project$Validation$Carré}) : {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
 								} else {
 									break _v0$3;
 								}
@@ -7029,17 +6973,34 @@ var $author$project$Validation$testCerclePatterns = F2(
 		if (((instructions.b && (instructions.a.$ === 'Repeat')) && (instructions.a.a === 360)) && (!instructions.b.b)) {
 			var _v1 = instructions.a;
 			var innerInstructions = _v1.b;
-			if (((((innerInstructions.b && (innerInstructions.a.$ === 'Forward')) && innerInstructions.b.b) && (innerInstructions.b.a.$ === 'Left')) && (innerInstructions.b.a.a === 1)) && (!innerInstructions.b.b.b)) {
-				var dist = innerInstructions.a.a;
-				var _v3 = innerInstructions.b;
-				return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Cercle ✓', shapeType: $author$project$Validation$Cercle} : {
-					isValid: false,
-					message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
-					shapeType: $author$project$Validation$Cercle
-				};
-			} else {
-				return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
+			_v2$2:
+			while (true) {
+				if (((innerInstructions.b && (innerInstructions.a.$ === 'Forward')) && innerInstructions.b.b) && (!innerInstructions.b.b.b)) {
+					switch (innerInstructions.b.a.$) {
+						case 'Left':
+							if (innerInstructions.b.a.a === 1) {
+								var dist = innerInstructions.a.a;
+								var _v3 = innerInstructions.b;
+								return ((15 <= dist) && (dist <= 16)) ? {isValid: true, message: 'Cercle validé', shapeType: $author$project$Validation$Cercle} : {isValid: false, message: 'Taille incorrecte', shapeType: $author$project$Validation$Cercle};
+							} else {
+								break _v2$2;
+							}
+						case 'Right':
+							if (innerInstructions.b.a.a === 1) {
+								var dist = innerInstructions.a.a;
+								var _v4 = innerInstructions.b;
+								return ((15 <= dist) && (dist <= 16)) ? {isValid: true, message: 'Cercle validé', shapeType: $author$project$Validation$Cercle} : {isValid: false, message: 'Taille incorrecte', shapeType: $author$project$Validation$Cercle};
+							} else {
+								break _v2$2;
+							}
+						default:
+							break _v2$2;
+					}
+				} else {
+					break _v2$2;
+				}
 			}
+			return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
 		} else {
 			return {isValid: false, message: '', shapeType: $author$project$Validation$FormeInconnue};
 		}
@@ -7061,7 +7022,7 @@ var $author$project$Validation$testEtoilePatterns = F2(
 								var _v4 = _v3.b;
 								var d2 = _v4.a.a;
 								var _v5 = _v4.b;
-								return _Utils_eq(d1, d2) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Étoile ✓', shapeType: $author$project$Validation$Étoile} : {
+								return _Utils_eq(d1, d2) ? ((d1 === 70) ? {isValid: true, message: 'Étoile validé', shapeType: $author$project$Validation$Étoile} : {
 									isValid: false,
 									message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
 									shapeType: $author$project$Validation$Étoile
@@ -7076,7 +7037,7 @@ var $author$project$Validation$testEtoilePatterns = F2(
 								var _v7 = _v6.b;
 								var d2 = _v7.a.a;
 								var _v8 = _v7.b;
-								return _Utils_eq(d1, d2) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Étoile ✓', shapeType: $author$project$Validation$Étoile} : {
+								return _Utils_eq(d1, d2) ? ((d1 === 70) ? {isValid: true, message: 'Étoile validé', shapeType: $author$project$Validation$Étoile} : {
 									isValid: false,
 									message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
 									shapeType: $author$project$Validation$Étoile
@@ -7114,7 +7075,7 @@ var $author$project$Validation$testTrianglePatterns = F2(
 										if (innerInstructions.b.a.a === 120) {
 											var dist = innerInstructions.a.a;
 											var _v3 = innerInstructions.b;
-											return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Triangle ✓', shapeType: $author$project$Validation$Triangle} : {
+											return (dist === 60) ? {isValid: true, message: 'Triangle validé', shapeType: $author$project$Validation$Triangle} : {
 												isValid: false,
 												message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
 												shapeType: $author$project$Validation$Triangle
@@ -7126,7 +7087,7 @@ var $author$project$Validation$testTrianglePatterns = F2(
 										if (innerInstructions.b.a.a === 120) {
 											var dist = innerInstructions.a.a;
 											var _v4 = innerInstructions.b;
-											return ((!expectedSize) || _Utils_eq(dist, expectedSize)) ? {isValid: true, message: 'Triangle ✓', shapeType: $author$project$Validation$Triangle} : {
+											return (dist === 60) ? {isValid: true, message: 'Triangle validé', shapeType: $author$project$Validation$Triangle} : {
 												isValid: false,
 												message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
 												shapeType: $author$project$Validation$Triangle
@@ -7157,7 +7118,7 @@ var $author$project$Validation$testTrianglePatterns = F2(
 									var _v7 = _v6.b;
 									var _v8 = _v7.b;
 									var d3 = _v8.a.a;
-									return (_Utils_eq(d1, d2) && _Utils_eq(d2, d3)) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Triangle ✓', shapeType: $author$project$Validation$Triangle} : {
+									return (_Utils_eq(d1, d2) && _Utils_eq(d2, d3)) ? ((d1 === 60) ? {isValid: true, message: 'Triangle validé', shapeType: $author$project$Validation$Triangle} : {
 										isValid: false,
 										message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
 										shapeType: $author$project$Validation$Triangle
@@ -7174,7 +7135,7 @@ var $author$project$Validation$testTrianglePatterns = F2(
 									var _v11 = _v10.b;
 									var _v12 = _v11.b;
 									var d3 = _v12.a.a;
-									return (_Utils_eq(d1, d2) && _Utils_eq(d2, d3)) ? (((!expectedSize) || _Utils_eq(d1, expectedSize)) ? {isValid: true, message: 'Triangle ✓', shapeType: $author$project$Validation$Triangle} : {
+									return (_Utils_eq(d1, d2) && _Utils_eq(d2, d3)) ? ((d1 === 60) ? {isValid: true, message: 'Triangle validé', shapeType: $author$project$Validation$Triangle} : {
 										isValid: false,
 										message: 'Taille incorrecte (attendu: ' + ($elm$core$String$fromInt(expectedSize) + ')'),
 										shapeType: $author$project$Validation$Triangle
@@ -7249,7 +7210,7 @@ var $author$project$Main$update = F2(
 							if (_v3.$ === 'Just') {
 								var level = _v3.a;
 								var validation = A3($author$project$Validation$validateCommand, instructions, level.formes, level.taille);
-								return validation.isValid ? ('✓ Bravo ! Niveau complété ! 🎉 ' + validation.message) : ('❌ ' + validation.message);
+								return validation.isValid ? ('Bravo ! Niveau complété ! ' + validation.message) : ('NUUUUL !' + validation.message);
 							} else {
 								return 'Erreur: niveau introuvable';
 							}
@@ -7268,9 +7229,9 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							dessin: $elm$core$Result$Err('Mode libre - Crée librement !'),
+							dessin: $elm$core$Result$Err('Mode libre'),
 							gameMode: $author$project$Levels$FreeMode,
-							levelMessage: 'Mode libre activé ! Dessine ce que tu veux 🎨',
+							levelMessage: 'Mode libre activé ! Dessine ce que tu veux',
 							saisi: ''
 						}),
 					$elm$core$Platform$Cmd$none);
@@ -7298,7 +7259,7 @@ var $author$project$Main$update = F2(
 							{
 								currentLevel: newLevel,
 								dessin: $elm$core$Result$Err(levelDescr),
-								levelMessage: 'Niveau ' + ($elm$core$String$fromInt(newLevel) + ' débloqué ! 🎉'),
+								levelMessage: 'Niveau ' + ($elm$core$String$fromInt(newLevel) + ' débloqué !'),
 								saisi: ''
 							}),
 						$elm$core$Platform$Cmd$none);
@@ -7306,7 +7267,7 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{levelMessage: 'Tu as fini tous les niveaux ! 🏆'}),
+							{levelMessage: 'Tu as fini tous les niveaux ! Tu est le GOAT de TC'}),
 						$elm$core$Platform$Cmd$none);
 				}
 			case 'NiveauPrecedent':

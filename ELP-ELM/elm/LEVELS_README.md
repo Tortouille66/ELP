@@ -10,7 +10,7 @@ Bienvenue dans le système de niveaux pour votre application Turtle! Ce guide ex
 - Parfait pour expérimenter avec les commandes
 
 ### 2. Mode Niveaux 📈
-- 6 niveaux progressifs de difficulté croissante
+- 5 niveaux progressifs de difficulté croissante
 - Chaque niveau te demande de dessiner une forme spécifique
 - La taille attendue est indiquée pour chaque forme
 - Progresse à travers les niveaux en réussissant chacun
@@ -23,8 +23,7 @@ Bienvenue dans le système de niveaux pour votre application Turtle! Ce guide ex
 | 2 | Le Carré | Dessine un carré | côté = 80 |
 | 3 | Le Triangle | Dessine un triangle | côté = 60 |
 | 4 | L'Étoile | Dessine une étoile à 5 branches | rayon = 70 |
-| 5 | Maître des Formes | Mélange cercle/carré/triangle | librement |
-| 6 | Créativité Sans Limites | Étoile + Cercle ensemble | librement |
+| 5 | Créativité Sans Limites | Étoile + Cercle ensemble | librement |
 
 ## Comment Dessiner Les Formes
 

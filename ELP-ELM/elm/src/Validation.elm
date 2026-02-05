@@ -81,10 +81,10 @@ testCerclePatterns instructions expectedSize =
         [Repeat 360 innerInstructions] ->
             case innerInstructions of
                 [Forward dist, Left 1] ->
-                    if 15<=dist <= 16 then
+                    if (15 <= dist && dist <= 16) then
                         { isValid = True
                         , shapeType = Cercle
-                        , message = "Cercle ✓"
+                        , message = "Cercle validé"
                         }
                     else
                         { isValid = False
@@ -94,10 +94,10 @@ testCerclePatterns instructions expectedSize =
                 
 
                 [Forward dist, Right 1] ->
-                    if 15<=dist <= 16 then
+                    if (15 <= dist && dist <= 16) then
                         { isValid = True
                         , shapeType = Cercle
-                        , message = "Cercle ✓"
+                        , message = "Cercle validé"
                         }
                     else
                         { isValid = False
@@ -125,7 +125,7 @@ testCarrePatterns instructions expectedSize =
                     if dist == 80 then
                         { isValid = True
                         , shapeType = Carré
-                        , message = "Carré ✓"
+                        , message = "Carré validé"
                         }
                     else
                         { isValid = False
@@ -137,7 +137,7 @@ testCarrePatterns instructions expectedSize =
                     if dist == 80 then
                         { isValid = True
                         , shapeType = Carré
-                        , message = "Carré ✓"
+                        , message = "Carré validé"
                         }
                     else
                         { isValid = False
@@ -151,7 +151,7 @@ testCarrePatterns instructions expectedSize =
                 if d1 == 90 then
                     { isValid = True
                     , shapeType = Carré
-                    , message = "Carré ✓"
+                    , message = "Carré validé"
                     }
                 else
                     { isValid = False
@@ -166,7 +166,7 @@ testCarrePatterns instructions expectedSize =
                 if d1 == 80 then
                     { isValid = True
                     , shapeType = Carré
-                    , message = "Carré ✓"
+                    , message = "Carré validé"
                     }
                 else
                     { isValid = False
@@ -192,10 +192,10 @@ testTrianglePatterns instructions expectedSize =
         [Repeat 3 innerInstructions] ->
             case innerInstructions of
                 [Forward dist, Left 120] ->
-                    if expectedSize == 0 || dist == expectedSize then
+                    if dist == 60 then
                         { isValid = True
                         , shapeType = Triangle
-                        , message = "Triangle ✓"
+                        , message = "Triangle validé"
                         }
                     else
                         { isValid = False
@@ -204,10 +204,10 @@ testTrianglePatterns instructions expectedSize =
                         }
                 -- Pattern 2: Repeat 3 [Forward n, Right 120]
                 [Forward dist, Right 120] ->
-                    if expectedSize == 0 || dist == expectedSize then
+                    if dist == 60 then
                         { isValid = True
                         , shapeType = Triangle
-                        , message = "Triangle ✓"
+                        , message = "Triangle validé"
                         }
                     else
                         { isValid = False
@@ -218,10 +218,10 @@ testTrianglePatterns instructions expectedSize =
         -- Pattern 3: Forward n, Left 120, Forward n, Left 120, Forward n
         [Forward d1, Left 120, Forward d2, Left 120, Forward d3] ->
             if d1 == d2 && d2 == d3 then
-                if expectedSize == 0 || d1 == expectedSize then
+                if d1 == 60 then
                     { isValid = True
                     , shapeType = Triangle
-                    , message = "Triangle ✓"
+                    , message = "Triangle validé"
                     }
                 else
                     { isValid = False
@@ -233,10 +233,10 @@ testTrianglePatterns instructions expectedSize =
         -- Pattern 4: Forward n, Right 120, Forward n, Right 120, Forward n
         [Forward d1, Right 120, Forward d2, Right 120, Forward d3] ->
             if d1 == d2 && d2 == d3 then
-                if expectedSize == 0 || d1 == expectedSize then
+                if d1 == 60 then
                     { isValid = True
                     , shapeType = Triangle
-                    , message = "Triangle ✓"
+                    , message = "Triangle validé"
                     }
                 else
                     { isValid = False
@@ -261,10 +261,10 @@ testEtoilePatterns instructions expectedSize =
             case innerInstructions of
                 [Forward d1, Left 144, Forward d2, Left 36] ->
                     if d1 == d2 then
-                        if expectedSize == 0 || d1 == expectedSize then
+                        if d1 == 70 then
                             { isValid = True
                             , shapeType = Étoile
-                            , message = "Étoile ✓"
+                            , message = "Étoile validé"
                             }
                         else
                             { isValid = False
@@ -276,10 +276,10 @@ testEtoilePatterns instructions expectedSize =
                 -- Pattern 2: Repeat 5 [Forward n, Right 144, Forward n, Right 36]
                 [Forward d1, Right 144, Forward d2, Right 36] ->
                     if d1 == d2 then
-                        if expectedSize == 0 || d1 == expectedSize then
+                        if d1 == 70 then
                             { isValid = True
                             , shapeType = Étoile
-                            , message = "Étoile ✓"
+                            , message = "Étoile validé"
                             }
                         else
                             { isValid = False

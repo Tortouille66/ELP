@@ -22,7 +22,7 @@ export class Game {
       players: this.players.map(p => ({ id: p.id, name: p.name }))
     });
   }
-
+//
   get currentPlayer() {
     return this.players[this.currentIndex];
   }
@@ -46,6 +46,46 @@ export class Game {
     }
 
     const result = Rules.applyDraw(p, card);
+
+    if (result.special === "FREEZZ") {
+      p.stopped = true;
+      this.logger?.log({ type: "freezz_stop", round: this.round, playerId: p.id, playerName: p.name });
+      return { type: "draw", ...result, forcedStop: true };
+    }
+
+    if (result.special === "THREE") {
+      const extra = [];
+      for (let t = 0; t < 3; t++) {
+        const c2 = this.deck.draw();
+        if (c2 === null) break;
+
+        const r2 = Rules.applyDraw(p, c2);
+        extra.push(r2);
+
+        this.logger?.log({
+          type: "draw_extra",
+          round: this.round,
+          playerId: p.id,
+          playerName: p.name,
+          cardDrawn: c2,
+          hand: [...p.hand],
+          roundPoints: p.roundPoints,
+          busted: p.busted,
+          via: "THREE"
+        });
+
+        // Si à un moment il bust vraiment (et CHANCE ne le sauve pas), on stop la chaîne
+        if (p.busted) break;
+
+        // Si un extra est FREEZZ, on stop direct aussi
+        if (r2.special === "FREEZZ") {
+          p.stopped = true;
+          break;
+        }
+      }
+
+      return { type: "draw", ...result, extraDraws: extra };
+    }
 
     this.logger?.log({
       type: "draw",
@@ -84,5 +124,36 @@ export class Game {
     });
 
     return { type: "stop" };
+  }
+
+
+  endRoundAndApplyScores() {
+    const results = [];
+
+    for (const p of this.players) {
+      const gained = p.busted ? 0 : p.roundPoints;
+      p.totalScore += gained;
+
+      results.push({
+        id: p.id,
+        name: p.name,
+        gained,
+        total: p.totalScore,
+        busted: p.busted
+      });
+    }
+
+    this.logger?.log({
+      type: "round_end",
+      round: this.round,
+      results
+    });
+
+    this.round += 1;
+    return results;
+  }
+
+  getWinner(targetScore = 200) {
+    return this.players.find(p => p.totalScore >= targetScore) ?? null;
   }
 }

@@ -26,6 +26,12 @@ export function buildDefaultDeck() {
   for (let n = 0; n <= 12; n++) {
     for (let k = 0; k < n; k++) { cards.push(n); }
   }
+    // 3 exemplaires de chaque carte spéciale
+  for (let i = 0; i < 3; i++) {
+    cards.push({ kind: "THREE" });
+    cards.push({ kind: "CHANCE" });
+    cards.push({ kind: "FREEZZ" });
+  }
   cards.push(0);
   return cards;
 }
